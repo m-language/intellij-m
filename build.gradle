@@ -1,0 +1,30 @@
+plugins {
+    id 'org.jetbrains.intellij' version '0.2.19'
+}
+
+group 'io.github.m'
+version '0.1.0'
+
+apply plugin: 'java'
+apply plugin: 'scala'
+
+task copyGen(type: Copy) {
+    from 'src/main/gen'
+    into 'src/main/java'
+    exclude 'src/main/gen/io/github/m/intellij/lang/lexer/MLexer.java'
+}
+
+compileJava.dependsOn copyGen
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.11.8'
+    testCompile 'org.scalatest:scalatest_2.11:3.0.0'
+}
+
+intellij {
+    version '2018.1.2'
+}

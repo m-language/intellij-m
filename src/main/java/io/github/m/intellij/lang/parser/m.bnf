@@ -1,0 +1,23 @@
+{
+  parserClass="io.github.m.intellij.lang.parser.MParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="M"
+  psiImplClassSuffix="Impl"
+  psiPackage="io.github.m.intellij.lang.psi"
+  psiImplPackage="io.github.m.intellij.lang.psi.impl"
+  psiImplUtilClass="io.github.m.intellij.lang.psi.MPsiImplUtil"
+
+  elementTypeHolderClass="io.github.m.intellij.lang.lexer.MTokenTypes"
+  elementTypeClass="io.github.m.intellij.lang.lexer.MElementType"
+  tokenTypeClass="io.github.m.intellij.lang.lexer.MTokenType"
+}
+
+file ::= expr*
+
+expr ::= list
+       | atom
+
+list ::= OPEN_PAREN expr* CLOSE_PAREN
+atom ::= IDENTIFIER | STRING | NUMBER | CHAR

@@ -1,0 +1,34 @@
+<idea-plugin>
+    <id>io.github.m.intellij-plugin</id>
+    <name>Intellij-M</name>
+    <vendor email="aedan.smith@outlook.com" url="https://aedans.github.io/">Aedan Smith</vendor>
+
+    <description><![CDATA[
+    Plugin for the M programming language.
+    ]]></description>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="io.github.m.intellij.file.MFileTypeFactory"/>
+        <fileTypeDetector implementation="io.github.m.intellij.file.MFileTypeDetector"/>
+
+        <colorSettingsPage implementation="io.github.m.intellij.lang.editor.MColorSettingsPage"/>
+
+        <completion.contributor language="M" implementationClass="io.github.m.intellij.lang.editor.MKeywordCompletionContributor"/>
+        <annotator language="M" implementationClass="io.github.m.intellij.lang.editor.MAnnotator"/>
+
+        <lang.parserDefinition language="M" implementationClass="io.github.m.intellij.lang.parser.MParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="M" implementationClass="io.github.m.intellij.lang.editor.MSyntaxHighlighterFactory"/>
+        <lang.braceMatcher language="M" implementationClass="io.github.m.intellij.lang.MBraceMatcher"/>
+        <lang.commenter language="M" implementationClass="io.github.m.intellij.lang.MCommenter"/>
+    </extensions>
+
+    <actions>
+        <action id="M.NewMFile"
+                class="io.github.m.intellij.actions.NewMFile"
+                text="M File"
+                description="Create a new M file"
+                icon="MPluginIcons.M_ICON">
+            <add-to-group group-id="NewGroup" relative-to-action="NewFile" anchor="before"/>
+        </action>
+    </actions>
+</idea-plugin>
