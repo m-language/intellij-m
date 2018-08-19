@@ -28,6 +28,7 @@ NUMBER="-"?[0-9\.]+{IDENTIFIER}?
 WHITE_SPACE=[\ \n\r\t\f]+
 COMMENT=";"[^\r\n]*
 DOC_COMMENT=";;"[^\r\n]*
+TITLE_COMMENT=";;;"[^\r\n]*
 
 STRING=\"{STRING_CHARACTER}*\"?
 STRING_CHARACTER="\\".|[^\"\\]
@@ -40,6 +41,7 @@ CHAR=\\.
 {CLOSE_PAREN} { return MTokenTypes.CLOSE_PAREN; }
 
 {WHITE_SPACE} { return TokenType.WHITE_SPACE; }
+{TITLE_COMMENT} { return MTokens.TITLE_COMMENT; }
 {DOC_COMMENT} { return MTokens.DOC_COMMENT; }
 {COMMENT} { return MTokens.COMMENT; }
 

@@ -14,6 +14,7 @@ class MSyntaxHighlighter extends SyntaxHighlighterBase() {
   override def getTokenHighlights(tokenType: IElementType): Array[TextAttributesKey] = tokenType match {
     case COMMENT => Array(COMMENT_KEY)
     case DOC_COMMENT => Array(DOC_COMMENT_KEY)
+    case TITLE_COMMENT => Array(TITLE_COMMENT_KEY)
     case IDENTIFIER => Array(IDENTIFIER_KEY)
     case OPEN_PAREN | CLOSE_PAREN => Array(PARENTHESES_KEY)
     case STRING | CHAR => Array(STRING_KEY)
@@ -27,6 +28,7 @@ class MSyntaxHighlighter extends SyntaxHighlighterBase() {
 object MSyntaxHighlighter {
   val COMMENT_KEY: TextAttributesKey = createKey("M_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
   val DOC_COMMENT_KEY: TextAttributesKey = createKey("M_DOC_COMMENT", DefaultLanguageHighlighterColors.DOC_COMMENT)
+  val TITLE_COMMENT_KEY: TextAttributesKey = createKey("M_TITLE_COMMENT", DefaultLanguageHighlighterColors.CONSTANT)
   val IDENTIFIER_KEY: TextAttributesKey = createKey("M_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER)
   val PARENTHESES_KEY: TextAttributesKey = createKey("M_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES)
   val STRING_KEY: TextAttributesKey = createKey("M_STRING", DefaultLanguageHighlighterColors.STRING)

@@ -66,6 +66,7 @@ object MColorSettingsPage {
   val attributesDescriptors = Array(
     new AttributesDescriptor("Comments", MSyntaxHighlighter.COMMENT_KEY),
     new AttributesDescriptor("Doc Comments", MSyntaxHighlighter.DOC_COMMENT_KEY),
+    new AttributesDescriptor("Title Comments", MSyntaxHighlighter.TITLE_COMMENT_KEY),
     new AttributesDescriptor("Keywords", MSyntaxHighlighter.KEYWORD_KEY),
     new AttributesDescriptor("Identifiers", MSyntaxHighlighter.IDENTIFIER_KEY),
     new AttributesDescriptor("Parentheses", MSyntaxHighlighter.PARENTHESES_KEY),
