@@ -43,7 +43,7 @@ public class MParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENTIFIER | STRING | NUMBER | CHAR
+  // IDENTIFIER | STRING | NUMBER
   public static boolean atom(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "atom")) return false;
     boolean r;
@@ -51,7 +51,6 @@ public class MParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, IDENTIFIER);
     if (!r) r = consumeToken(b, STRING);
     if (!r) r = consumeToken(b, NUMBER);
-    if (!r) r = consumeToken(b, CHAR);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

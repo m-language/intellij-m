@@ -49,7 +49,6 @@ class MColorSettingsPage extends ColorSettingsPage {
       |          (list (<keyword>keyword</keyword> keyword) (car expr))
       |          ((id quote-inline) (cdr expr)))))))
       |
-      |(quote-inline \a \b \c)        ; (a b c)
       |(quote-inline "Hello" "World") ; (Hello World)
       |(quote-inline 1 2 3)           ; (1 2 3)"""
       .stripMargin

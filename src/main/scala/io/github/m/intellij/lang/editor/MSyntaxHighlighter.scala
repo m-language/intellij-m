@@ -17,7 +17,7 @@ class MSyntaxHighlighter extends SyntaxHighlighterBase() {
     case TITLE_COMMENT => Array(TITLE_COMMENT_KEY)
     case IDENTIFIER => Array(IDENTIFIER_KEY)
     case OPEN_PAREN | CLOSE_PAREN => Array(PARENTHESES_KEY)
-    case STRING | CHAR => Array(STRING_KEY)
+    case STRING => Array(STRING_KEY)
     case NUMBER => Array(NUMBER_KEY)
     case _ => Array.empty
   }
@@ -33,7 +33,7 @@ object MSyntaxHighlighter {
   val PARENTHESES_KEY: TextAttributesKey = createKey("M_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES)
   val STRING_KEY: TextAttributesKey = createKey("M_STRING", DefaultLanguageHighlighterColors.STRING)
   val NUMBER_KEY: TextAttributesKey = createKey("M_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
-  val KEYWORD_KEY: TextAttributesKey = createKey("M_KEYWROD", DefaultLanguageHighlighterColors.KEYWORD)
+  val KEYWORD_KEY: TextAttributesKey = createKey("M_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
 
   def createKey(string: String, key: TextAttributesKey): TextAttributesKey =
     TextAttributesKey.createTextAttributesKey(string, key)

@@ -12,7 +12,6 @@ public interface MTokenTypes {
   IElementType EXPR = new MElementType("EXPR");
   IElementType LIST = new MElementType("LIST");
 
-  IElementType CHAR = new MTokenType("CHAR");
   IElementType CLOSE_PAREN = new MTokenType("CLOSE_PAREN");
   IElementType IDENTIFIER = new MTokenType("IDENTIFIER");
   IElementType NUMBER = new MTokenType("NUMBER");

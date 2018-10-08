@@ -33,8 +33,6 @@ TITLE_COMMENT=";;;"[^\r\n]*
 STRING=\"{STRING_CHARACTER}*\"?
 STRING_CHARACTER="\\".|[^\"\\]
 
-CHAR=\\.
-
 %%
 
 {OPEN_PAREN} { return MTokenTypes.OPEN_PAREN; }
@@ -46,7 +44,6 @@ CHAR=\\.
 {COMMENT} { return MTokens.COMMENT; }
 
 {STRING} { return MTokenTypes.STRING; }
-{CHAR} { return MTokenTypes.CHAR; }
 {NUMBER} { return MTokenTypes.NUMBER; }
 {IDENTIFIER} { return MTokenTypes.IDENTIFIER; }
 

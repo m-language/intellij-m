@@ -20,4 +20,4 @@ expr ::= list
        | atom
 
 list ::= OPEN_PAREN expr* CLOSE_PAREN
-atom ::= IDENTIFIER | STRING | NUMBER | CHAR
+atom ::= IDENTIFIER | STRING | NUMBER
