@@ -29,24 +29,24 @@ class MColorSettingsPage extends ColorSettingsPage {
       |      ()
       |      (<keyword>if</keyword> (list? (car expr))
       |        (<keyword>if</keyword> (and (keyword? (caar expr))
-      |                 (<keyword>lambda</keyword> (eq-keyword (caar expr) (<keyword>keyword</keyword> unquote))))
+      |                 (<keyword>lambda</keyword> (eq-symbol (caar expr) (<keyword>symbol</keyword> unquote))))
       |          (list
-      |            (<keyword>keyword</keyword> cons)
+      |            (<keyword>symbol</keyword> cons)
       |            (cadr (car expr))
       |            ((id quote-inline) (cdr expr)))
       |          (<keyword>if</keyword> (and (keyword? (caar expr))
-      |                   (<keyword>lambda</keyword> (eq-keyword (caar expr) (<keyword>keyword</keyword> splice))))
+      |                   (<keyword>lambda</keyword> (eq-symbol (caar expr) (<keyword>symbol</keyword> splice))))
       |            (list
-      |              (<keyword>keyword</keyword> append-list)
+      |              (<keyword>symbol</keyword> append-list)
       |              (cadr (car expr))
       |              ((id quote-inline) (cdr expr)))
       |            (list
-      |              (<keyword>keyword</keyword> cons)
+      |              (<keyword>symbol</keyword> cons)
       |              ((id quote-inline) (car expr))
       |              ((id quote-inline) (cdr expr)))))
       |        (list
-      |          (<keyword>keyword</keyword> cons)
-      |          (list (<keyword>keyword</keyword> keyword) (car expr))
+      |          (<keyword>symbol</keyword> cons)
+      |          (list (<keyword>symbol</keyword> symbol) (car expr))
       |          ((id quote-inline) (cdr expr)))))))
       |
       |(quote-inline "Hello" "World") ; (Hello World)

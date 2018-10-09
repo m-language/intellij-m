@@ -17,8 +17,7 @@ class MKeywordCompletionContributor extends CompletionContributor {
           result.addElement(LookupElementBuilder.create("def"))
           result.addElement(LookupElementBuilder.create("lambda"))
           result.addElement(LookupElementBuilder.create("if"))
-          result.addElement(LookupElementBuilder.create("do"))
-          result.addElement(LookupElementBuilder.create("keyword"))
+          result.addElement(LookupElementBuilder.create("symbol"))
           result.addElement(LookupElementBuilder.create("macro"))
           result.addElement(LookupElementBuilder.create("import"))
         }
