@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.intellij' version '0.2.19'
+    id 'org.jetbrains.intellij' version '0.3.12'
 }
 
 group 'io.github.m'
@@ -26,5 +26,5 @@ dependencies {
 }
 
 intellij {
-    version '2018.1.2'
+    version '2018.3'
 }
