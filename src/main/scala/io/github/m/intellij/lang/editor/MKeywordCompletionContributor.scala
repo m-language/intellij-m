@@ -15,11 +15,9 @@ class MKeywordCompletionContributor extends CompletionContributor {
       new CompletionProvider[CompletionParameters]() {
         override def addCompletions(parameters: CompletionParameters, context: ProcessingContext, result: CompletionResultSet): Unit = {
           result.addElement(LookupElementBuilder.create("def"))
-          result.addElement(LookupElementBuilder.create("lambda"))
-          result.addElement(LookupElementBuilder.create("if"))
-          result.addElement(LookupElementBuilder.create("symbol"))
-          result.addElement(LookupElementBuilder.create("macro"))
-          result.addElement(LookupElementBuilder.create("import"))
+          result.addElement(LookupElementBuilder.create("fn"))
+          result.addElement(LookupElementBuilder.create("ap"))
+          result.addElement(LookupElementBuilder.create("impure"))
         }
       }
     )
