@@ -22,7 +22,7 @@ import io.github.m.intellij.lang.lexer.*;
 OPEN_PAREN="("
 CLOSE_PAREN=")"
 
-IDENTIFIER=[^() \t\r\n_\\]+
+IDENTIFIER=[^() \t\r\n\"\;]+
 NUMBER="-"?[0-9\.]+{IDENTIFIER}?
 
 WHITE_SPACE=[\ \n\r\t\f]+
