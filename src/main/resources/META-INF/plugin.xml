@@ -4,7 +4,7 @@
     <vendor email="aedan.smith@outlook.com" url="https://aedans.github.io/">Aedan Smith</vendor>
 
     <description><![CDATA[
-    Plugin for the M programming language.
+    IntelliJ plugin for the M programming language.
     ]]></description>
 
     <extensions defaultExtensionNs="com.intellij">
