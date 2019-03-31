@@ -1,6 +1,6 @@
 # IntelliJ-M
 
-![image](img/image.png)
+![image](img/preview.png)
 
 An IntelliJ plugin for the M programming language.
 
