@@ -32,7 +32,7 @@ TITLE_COMMENT=";;;"[^\r\n]*
 
 STRING={DOUBLE_STRING}|{SINGLE_STRING}
 SINGLE_STRING=\" ~\"
-DOUBLE_STRING=\"\" ~\"\"
+DOUBLE_STRING=\"\" ~(\"\")
 
 %%
 
