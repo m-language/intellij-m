@@ -30,8 +30,9 @@ COMMENT=";"[^\r\n]*
 DOC_COMMENT=";;"[^\r\n]*
 TITLE_COMMENT=";;;"[^\r\n]*
 
-STRING=\"{STRING_CHARACTER}*\"?
-STRING_CHARACTER="\\".|[^\"\\]
+STRING={DOUBLE_STRING}|{SINGLE_STRING}
+SINGLE_STRING=\" ~\"
+DOUBLE_STRING=\"\" ~\"\"
 
 %%
 
