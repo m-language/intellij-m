@@ -1,1 +1,9 @@
-src/main/gen.
+.gradle
+.idea
+bin
+build
+build.sbt
+project
+src/main/gen
+src/main/java/io/github/m/intellij/lang/lexer/_MLexer.java~
+src/main/resources/m-logo.png
