@@ -17,7 +17,6 @@ class MKeywordCompletionContributor extends CompletionContributor {
           result.addElement(LookupElementBuilder.create("def"))
           result.addElement(LookupElementBuilder.create("fn"))
           result.addElement(LookupElementBuilder.create("macro"))
-          result.addElement(LookupElementBuilder.create("impure"))
         }
       }
     )

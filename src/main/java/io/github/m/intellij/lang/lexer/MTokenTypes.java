@@ -21,7 +21,7 @@ public interface MTokenTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-       if (type == ATOM) {
+      if (type == ATOM) {
         return new MAtomImpl(node);
       }
       else if (type == EXPR) {

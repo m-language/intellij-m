@@ -19,33 +19,31 @@ import io.github.m.intellij.lang.lexer.*;
     }
 %}
 
-OPEN_PAREN="("
-CLOSE_PAREN=")"
-
-IDENTIFIER=[^() \t\r\n\"\;]+
-NUMBER="-"?[0-9\.]+{IDENTIFIER}?
-
 WHITE_SPACE=[\ \n\r\t\f]+
 COMMENT=";"[^\r\n]*
 DOC_COMMENT=";;"[^\r\n]*
 TITLE_COMMENT=";;;"[^\r\n]*
 
-STRING={DOUBLE_STRING}|{SINGLE_STRING}
-SINGLE_STRING=\" ~\"
-DOUBLE_STRING=\"\" ~(\"\")
+NUMBER="-"?[0-9\.]+{IDENTIFIER}?
+STRING=\" ("\"\"" | [^\"])* \"
+IDENTIFIER=[^(){}\[\] \t\r\n\"\;]+
 
 %%
 
-{OPEN_PAREN} { return MTokenTypes.OPEN_PAREN; }
-{CLOSE_PAREN} { return MTokenTypes.CLOSE_PAREN; }
+"(" { return MTokenTypes.OPEN_PAREN; }
+//"{" { return MTokenTypes.OPEN_BRACE; }
+//"[" { return MTokenTypes.OPEN_BRACKET; }
+")" { return MTokenTypes.CLOSE_PAREN; }
+//"}" { return MTokenTypes.CLOSE_BRACE; }
+//"]" { return MTokenTypes.CLOSE_BRACKET; }
 
 {WHITE_SPACE} { return TokenType.WHITE_SPACE; }
 {TITLE_COMMENT} { return MTokens.TITLE_COMMENT; }
 {DOC_COMMENT} { return MTokens.DOC_COMMENT; }
 {COMMENT} { return MTokens.COMMENT; }
 
-{STRING} { return MTokenTypes.STRING; }
 {NUMBER} { return MTokenTypes.NUMBER; }
+{STRING} { return MTokenTypes.STRING; }
 {IDENTIFIER} { return MTokenTypes.IDENTIFIER; }
 
 [^] { return TokenType.BAD_CHARACTER; }
