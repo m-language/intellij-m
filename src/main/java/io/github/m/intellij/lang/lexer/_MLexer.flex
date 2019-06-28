@@ -19,25 +19,27 @@ import io.github.m.intellij.lang.lexer.*;
     }
 %}
 
-WHITE_SPACE=[\ \n\r\t\f]+
 COMMENT=";"[^\r\n]*
 DOC_COMMENT=";;"[^\r\n]*
 TITLE_COMMENT=";;;"[^\r\n]*
 
-NUMBER="-"?[0-9\.]+{IDENTIFIER}?
+NUMBER="-"?[0-9\.]+
 STRING=\" ("\"\"" | [^\"])* \"
 IDENTIFIER=[^(){}\[\] \t\r\n\"\;]+
 
 %%
 
 "(" { return MTokenTypes.OPEN_PAREN; }
-//"{" { return MTokenTypes.OPEN_BRACE; }
-//"[" { return MTokenTypes.OPEN_BRACKET; }
+"{" { return MTokenTypes.OPEN_BRACE; }
+"[" { return MTokenTypes.OPEN_BRACKET; }
 ")" { return MTokenTypes.CLOSE_PAREN; }
-//"}" { return MTokenTypes.CLOSE_BRACE; }
-//"]" { return MTokenTypes.CLOSE_BRACKET; }
+"}" { return MTokenTypes.CLOSE_BRACE; }
+"]" { return MTokenTypes.CLOSE_BRACKET; }
 
-{WHITE_SPACE} { return TokenType.WHITE_SPACE; }
+[ ] { return MTokenTypes.SPACE; }
+[\t] { return MTokenTypes.TAB; }
+[\n] { return MTokenTypes.NEWLINE; }
+
 {TITLE_COMMENT} { return MTokens.TITLE_COMMENT; }
 {DOC_COMMENT} { return MTokens.DOC_COMMENT; }
 {COMMENT} { return MTokens.COMMENT; }

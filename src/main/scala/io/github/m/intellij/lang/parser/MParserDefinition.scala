@@ -30,7 +30,7 @@ class MParserDefinition extends ParserDefinition {
 
 object MParserDefinition {
   val COMMENTS: TokenSet = TokenSet.create(MTokens.COMMENT, MTokens.DOC_COMMENT, MTokens.TITLE_COMMENT)
-  val WHITESPACES: TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
+  val WHITESPACES: TokenSet = TokenSet.create()
   val STRINGS: TokenSet = TokenSet.create(MTokenTypes.STRING)
   val M_FILE: IFileElementType = new IFileElementType(MLanguage.INSTANCE)
 }

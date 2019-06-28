@@ -5,9 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MList extends PsiElement {
+public interface MApplyBraceList extends PsiElement {
+
+  @NotNull
+  MAtom getAtom();
 
   @NotNull
   List<MExpr> getExprList();
+
+  @NotNull
+  List<MWhitespace> getWhitespaceList();
 
 }

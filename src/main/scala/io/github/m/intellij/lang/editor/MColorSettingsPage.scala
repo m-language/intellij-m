@@ -17,40 +17,46 @@ class MColorSettingsPage extends ColorSettingsPage {
   override def getIcon: Icon = MPluginIcons.M_ICON
 
   override def getDemoText: String =
-    """;;; Demo text for the M IntelliJ plugin.
-      |(<keyword>import</keyword> io.github.m.std.list)
+    """;; The natural number 0.
+      |def 0
+      |  fn f x x
       |
-      |;; The quote-inline macro is identical to the quote macro except that it takes
-      |;; variadic arguments instead of a list.
-      |(<keyword>macro</keyword> quote-inline)
-      |(<keyword>def</keyword> quote-inline
-      |  (<keyword>lambda</keyword> expr
-      |    (<keyword>if</keyword> (nil? expr)
-      |      ()
-      |      (<keyword>if</keyword> (list? (car expr))
-      |        (<keyword>if</keyword> (and (keyword? (caar expr))
-      |                 (<keyword>lambda</keyword> (eq-symbol (caar expr) (<keyword>symbol</keyword> unquote))))
-      |          (list
-      |            (<keyword>symbol</keyword> cons)
-      |            (cadr (car expr))
-      |            ((id quote-inline) (cdr expr)))
-      |          (<keyword>if</keyword> (and (keyword? (caar expr))
-      |                   (<keyword>lambda</keyword> (eq-symbol (caar expr) (<keyword>symbol</keyword> splice))))
-      |            (list
-      |              (<keyword>symbol</keyword> append-list)
-      |              (cadr (car expr))
-      |              ((id quote-inline) (cdr expr)))
-      |            (list
-      |              (<keyword>symbol</keyword> cons)
-      |              ((id quote-inline) (car expr))
-      |              ((id quote-inline) (cdr expr)))))
-      |        (list
-      |          (<keyword>symbol</keyword> cons)
-      |          (list (<keyword>symbol</keyword> symbol) (car expr))
-      |          ((id quote-inline) (cdr expr)))))))
+      |;; Tests if a natural number is 0.
+      |defn 0?(n)
+      |  n(const(true) false)
       |
-      |(quote-inline "Hello" "World") ; (Hello World)
-      |(quote-inline 1 2 3)           ; (1 2 3)"""
+      |;; The successor of a natural number.
+      |defn inc(n f x)
+      |  f(n(f x))
+      |
+      |;; The predecessor of a natural number.
+      |defn dec(n f x)
+      |  n((fn g h h(g(f))) const(x) id)
+      |
+      |;; Adds two natural numbers.
+      |defnrec {a + b}
+      |  if 0?(b)
+      |    a
+      |    {inc(a) + dec(b)}
+      |
+      |;; Subtracts two natural numbers.
+      |defnrec {a - b}
+      |  if 0?(b)
+      |    a
+      |    {dec(a) - dec(b)}
+      |
+      |;; True if the first natural number is less than the second natural number.
+      |defnrec {a < b}
+      |  cond
+      |    0?(a)
+      |      not(0?(b))
+      |    0?(b)
+      |      false
+      |    {dec(a) < dec(b)}
+      |
+      |;; True if the first natural number is greater than the second natural number.
+      |def > swap(<)
+      |"""
       .stripMargin
       .replaceAll("\r\n|\r|\n", "\n")
 
@@ -66,10 +72,13 @@ object MColorSettingsPage {
     new AttributesDescriptor("Comments", MSyntaxHighlighter.COMMENT_KEY),
     new AttributesDescriptor("Doc Comments", MSyntaxHighlighter.DOC_COMMENT_KEY),
     new AttributesDescriptor("Title Comments", MSyntaxHighlighter.TITLE_COMMENT_KEY),
-    new AttributesDescriptor("Keywords", MSyntaxHighlighter.KEYWORD_KEY),
+    new AttributesDescriptor("Parentheses", MSyntaxHighlighter.PAREN_KEY),
+    new AttributesDescriptor("Braces", MSyntaxHighlighter.BRACE_KEY),
+    new AttributesDescriptor("Brackets", MSyntaxHighlighter.BRACKET_KEY),
     new AttributesDescriptor("Identifiers", MSyntaxHighlighter.IDENTIFIER_KEY),
-    new AttributesDescriptor("Parentheses", MSyntaxHighlighter.PARENTHESES_KEY),
     new AttributesDescriptor("Strings", MSyntaxHighlighter.STRING_KEY),
-    new AttributesDescriptor("Numbers", MSyntaxHighlighter.NUMBER_KEY)
+    new AttributesDescriptor("Numbers", MSyntaxHighlighter.NUMBER_KEY),
+    new AttributesDescriptor("Keywords", MSyntaxHighlighter.KEYWORD_KEY),
+    new AttributesDescriptor("Functions", MSyntaxHighlighter.FUNCTION_KEY)
   )
 }

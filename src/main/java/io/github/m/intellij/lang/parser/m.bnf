@@ -14,10 +14,24 @@
   tokenTypeClass="io.github.m.intellij.lang.lexer.MTokenType"
 }
 
-file ::= expr*
+file ::= (whitespace* iexpr)* whitespace*
 
-expr ::= list
-       | atom
+iexpr ::= ilist | expr
+expr ::= paren_list | brace_list | bracket_list | apply_paren_list | apply_brace_list | apply_bracket_list | atom
 
-list ::= OPEN_PAREN expr* CLOSE_PAREN
+ilist ::= (nosspace* expr)+ nosspace* STATEMENT_BREAK (nosspace* INDENT slist* nosspace* DEDENT)?
+slist ::= (nosspace* iexpr)+ | nosspace* STATEMENT_BREAK
+
+paren_list ::= OPEN_PAREN (whitespace* expr)* whitespace* CLOSE_PAREN
+brace_list ::= OPEN_BRACE (whitespace* expr)* whitespace* CLOSE_BRACE
+bracket_list ::= OPEN_BRACKET (whitespace* expr)* whitespace* CLOSE_BRACKET
+
+apply_paren_list ::= atom OPEN_PAREN (whitespace* expr)* whitespace* CLOSE_PAREN
+apply_brace_list ::= atom OPEN_BRACE (whitespace* expr)* whitespace* CLOSE_BRACE
+apply_bracket_list ::= atom OPEN_BRACKET (whitespace* expr)* whitespace* CLOSE_BRACKET
+
 atom ::= IDENTIFIER | STRING | NUMBER
+
+whitespace ::= sspace | nosspace
+nosspace ::= SPACE | TAB | NEWLINE
+sspace ::= STATEMENT_BREAK | INDENT | DEDENT

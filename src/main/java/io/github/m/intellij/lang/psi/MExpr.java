@@ -8,9 +8,24 @@ import com.intellij.psi.PsiElement;
 public interface MExpr extends PsiElement {
 
   @Nullable
+  MApplyBraceList getApplyBraceList();
+
+  @Nullable
+  MApplyBracketList getApplyBracketList();
+
+  @Nullable
+  MApplyParenList getApplyParenList();
+
+  @Nullable
   MAtom getAtom();
 
   @Nullable
-  MList getList();
+  MBraceList getBraceList();
+
+  @Nullable
+  MBracketList getBracketList();
+
+  @Nullable
+  MParenList getParenList();
 
 }

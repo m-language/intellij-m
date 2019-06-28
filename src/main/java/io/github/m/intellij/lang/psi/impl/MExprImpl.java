@@ -28,14 +28,44 @@ public class MExprImpl extends ASTWrapperPsiElement implements MExpr {
 
   @Override
   @Nullable
+  public MApplyBraceList getApplyBraceList() {
+    return findChildByClass(MApplyBraceList.class);
+  }
+
+  @Override
+  @Nullable
+  public MApplyBracketList getApplyBracketList() {
+    return findChildByClass(MApplyBracketList.class);
+  }
+
+  @Override
+  @Nullable
+  public MApplyParenList getApplyParenList() {
+    return findChildByClass(MApplyParenList.class);
+  }
+
+  @Override
+  @Nullable
   public MAtom getAtom() {
     return findChildByClass(MAtom.class);
   }
 
   @Override
   @Nullable
-  public MList getList() {
-    return findChildByClass(MList.class);
+  public MBraceList getBraceList() {
+    return findChildByClass(MBraceList.class);
+  }
+
+  @Override
+  @Nullable
+  public MBracketList getBracketList() {
+    return findChildByClass(MBracketList.class);
+  }
+
+  @Override
+  @Nullable
+  public MParenList getParenList() {
+    return findChildByClass(MParenList.class);
   }
 
 }
