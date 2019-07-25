@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.intellij' version '0.4.7'
+    id 'org.jetbrains.intellij' version '0.4.9'
 }
 
 group 'io.github.m'
@@ -21,10 +21,5 @@ repositories {
 }
 
 dependencies {
-    compile 'org.scala-lang:scala-library:2.11.8'
-    testCompile 'org.scalatest:scalatest_2.11:3.0.0'
-}
-
-intellij {
-    version '2019.1'
+    compile 'org.scala-lang:scala-library:2.11.12'
 }
