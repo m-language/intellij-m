@@ -250,6 +250,7 @@ public class MIndentingProcessor extends MergingLexerAdapter {
     private boolean isCommentTokenType(IElementType elementType) {
         return elementType == MTokens.COMMENT ||
                 elementType == MTokens.DOC_COMMENT ||
-                elementType == MTokens.TITLE_COMMENT;
+                elementType == MTokens.TITLE_COMMENT ||
+                elementType == MTokens.BLOCK_COMMENT;
     }
 }

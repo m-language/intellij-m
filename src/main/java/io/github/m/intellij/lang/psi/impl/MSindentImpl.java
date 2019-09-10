@@ -11,14 +11,14 @@ import static io.github.m.intellij.lang.lexer.MTokenTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.m.intellij.lang.psi.*;
 
-public class MIexprImpl extends ASTWrapperPsiElement implements MIexpr {
+public class MSindentImpl extends ASTWrapperPsiElement implements MSindent {
 
-  public MIexprImpl(@NotNull ASTNode node) {
+  public MSindentImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MVisitor visitor) {
-    visitor.visitIexpr(this);
+    visitor.visitSindent(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -27,15 +27,9 @@ public class MIexprImpl extends ASTWrapperPsiElement implements MIexpr {
   }
 
   @Override
-  @Nullable
-  public MExpr getExpr() {
-    return findChildByClass(MExpr.class);
-  }
-
-  @Override
-  @Nullable
-  public MIlist getIlist() {
-    return findChildByClass(MIlist.class);
+  @NotNull
+  public List<MNosspace> getNosspaceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MNosspace.class);
   }
 
 }

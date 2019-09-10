@@ -5,13 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MExpr extends PsiElement {
-
-  @NotNull
-  List<MApplyArgs> getApplyArgsList();
-
-  @NotNull
-  MAtomicExpr getAtomicExpr();
+public interface MSdedent extends PsiElement {
 
   @NotNull
   List<MNosspace> getNosspaceList();

@@ -11,14 +11,14 @@ import static io.github.m.intellij.lang.lexer.MTokenTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.m.intellij.lang.psi.*;
 
-public class MExprImpl extends ASTWrapperPsiElement implements MExpr {
+public class MParenArgsImpl extends ASTWrapperPsiElement implements MParenArgs {
 
-  public MExprImpl(@NotNull ASTNode node) {
+  public MParenArgsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MVisitor visitor) {
-    visitor.visitExpr(this);
+    visitor.visitParenArgs(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,20 +28,14 @@ public class MExprImpl extends ASTWrapperPsiElement implements MExpr {
 
   @Override
   @NotNull
-  public List<MApplyArgs> getApplyArgsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MApplyArgs.class);
+  public List<MExpr> getExprList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MExpr.class);
   }
 
   @Override
   @NotNull
-  public MAtomicExpr getAtomicExpr() {
-    return findNotNullChildByClass(MAtomicExpr.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MNosspace> getNosspaceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MNosspace.class);
+  public List<MWhitespace> getWhitespaceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MWhitespace.class);
   }
 
 }

@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MBraceList extends PsiElement {
+public interface MBracketExpr extends PsiElement {
 
-  @NotNull
-  List<MExpr> getExprList();
-
-  @NotNull
-  List<MWhitespace> getWhitespaceList();
+  @Nullable
+  MBracketArgs getBracketArgs();
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MBracketList extends PsiElement {
+public interface MParenArgs extends PsiElement {
 
   @NotNull
   List<MExpr> getExprList();

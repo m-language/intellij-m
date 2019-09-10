@@ -11,14 +11,14 @@ import static io.github.m.intellij.lang.lexer.MTokenTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.m.intellij.lang.psi.*;
 
-public class MIlistImpl extends ASTWrapperPsiElement implements MIlist {
+public class MApplyArgsImpl extends ASTWrapperPsiElement implements MApplyArgs {
 
-  public MIlistImpl(@NotNull ASTNode node) {
+  public MApplyArgsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MVisitor visitor) {
-    visitor.visitIlist(this);
+    visitor.visitApplyArgs(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -27,21 +27,21 @@ public class MIlistImpl extends ASTWrapperPsiElement implements MIlist {
   }
 
   @Override
-  @NotNull
-  public List<MExpr> getExprList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MExpr.class);
+  @Nullable
+  public MApplyBraceArgs getApplyBraceArgs() {
+    return findChildByClass(MApplyBraceArgs.class);
   }
 
   @Override
-  @NotNull
-  public List<MNosspace> getNosspaceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MNosspace.class);
+  @Nullable
+  public MApplyBracketArgs getApplyBracketArgs() {
+    return findChildByClass(MApplyBracketArgs.class);
   }
 
   @Override
-  @NotNull
-  public List<MSlist> getSlistList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MSlist.class);
+  @Nullable
+  public MApplyParenArgs getApplyParenArgs() {
+    return findChildByClass(MApplyParenArgs.class);
   }
 
 }

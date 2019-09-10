@@ -11,14 +11,14 @@ import static io.github.m.intellij.lang.lexer.MTokenTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.m.intellij.lang.psi.*;
 
-public class MBraceListImpl extends ASTWrapperPsiElement implements MBraceList {
+public class MBracketArgsImpl extends ASTWrapperPsiElement implements MBracketArgs {
 
-  public MBraceListImpl(@NotNull ASTNode node) {
+  public MBracketArgsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MVisitor visitor) {
-    visitor.visitBraceList(this);
+    visitor.visitBracketArgs(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

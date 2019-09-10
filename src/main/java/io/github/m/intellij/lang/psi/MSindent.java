@@ -5,15 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MApplyBraceList extends PsiElement {
+public interface MSindent extends PsiElement {
 
   @NotNull
-  MAtom getAtom();
-
-  @NotNull
-  List<MExpr> getExprList();
-
-  @NotNull
-  List<MWhitespace> getWhitespaceList();
+  List<MNosspace> getNosspaceList();
 
 }

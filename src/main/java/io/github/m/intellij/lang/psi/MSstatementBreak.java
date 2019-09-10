@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MIexpr extends PsiElement {
+public interface MSstatementBreak extends PsiElement {
 
-  @Nullable
-  MExpr getExpr();
-
-  @Nullable
-  MIlist getIlist();
+  @NotNull
+  List<MNosspace> getNosspaceList();
 
 }

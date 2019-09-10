@@ -19,13 +19,14 @@ import io.github.m.intellij.lang.lexer.*;
     }
 %}
 
-COMMENT=";"[^\r\n]*
-DOC_COMMENT=";;"[^\r\n]*
-TITLE_COMMENT=";;;"[^\r\n]*
+COMMENT=("#"|";")[^\r\n]*
+DOC_COMMENT=("##"|";;")[^\r\n]*
+TITLE_COMMENT=("###"|";;;")[^\r\n]*
+BLOCK_COMMENT="#"+"{"[^\}]*"}"
 
 NUMBER="-"?[0-9\.]+
 STRING=\" ("\"\"" | [^\"])* \"
-IDENTIFIER=[^(){}\[\] \t\r\n\"\;]+
+IDENTIFIER=[^(){}\[\], \t\r\n\"\;]+
 
 %%
 
@@ -36,10 +37,13 @@ IDENTIFIER=[^(){}\[\] \t\r\n\"\;]+
 "}" { return MTokenTypes.CLOSE_BRACE; }
 "]" { return MTokenTypes.CLOSE_BRACKET; }
 
+"," { return MTokenTypes.COMMA; }
+
 [ ] { return MTokenTypes.SPACE; }
 [\t] { return MTokenTypes.TAB; }
 [\n] { return MTokenTypes.NEWLINE; }
 
+{BLOCK_COMMENT} { return MTokens.BLOCK_COMMENT; }
 {TITLE_COMMENT} { return MTokens.TITLE_COMMENT; }
 {DOC_COMMENT} { return MTokens.DOC_COMMENT; }
 {COMMENT} { return MTokens.COMMENT; }

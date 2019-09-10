@@ -17,35 +17,35 @@ class MColorSettingsPage extends ColorSettingsPage {
   override def getIcon: Icon = MPluginIcons.M_ICON
 
   override def getDemoText: String =
-    """;; The natural number 0.
+    """## The natural number 0.
       |def 0
       |  fn f x x
       |
-      |;; Tests if a natural number is 0.
+      |## Tests if a natural number is 0.
       |defn 0?(n)
-      |  n(const(true) false)
+      |  n(const(true), false)
       |
-      |;; The successor of a natural number.
-      |defn inc(n f x)
-      |  f(n(f x))
+      |## The successor of a natural number.
+      |defn inc(n, f, x)
+      |  f(n(f, x))
       |
-      |;; The predecessor of a natural number.
-      |defn dec(n f x)
-      |  n((fn g h h(g(f))) const(x) id)
+      |## The predecessor of a natural number.
+      |defn dec(n, f, x)
+      |  n(fn g h h(g(f)), const(x), id)
       |
-      |;; Adds two natural numbers.
+      |## Adds two natural numbers.
       |defnrec {a + b}
       |  if 0?(b)
       |    a
       |    {inc(a) + dec(b)}
       |
-      |;; Subtracts two natural numbers.
+      |## Subtracts two natural numbers.
       |defnrec {a - b}
       |  if 0?(b)
       |    a
       |    {dec(a) - dec(b)}
       |
-      |;; True if the first natural number is less than the second natural number.
+      |## True if the first natural number is less than the second natural number.
       |defnrec {a < b}
       |  cond
       |    0?(a)
@@ -54,7 +54,7 @@ class MColorSettingsPage extends ColorSettingsPage {
       |      false
       |    {dec(a) < dec(b)}
       |
-      |;; True if the first natural number is greater than the second natural number.
+      |## True if the first natural number is greater than the second natural number.
       |def > swap(<)
       |"""
       .stripMargin

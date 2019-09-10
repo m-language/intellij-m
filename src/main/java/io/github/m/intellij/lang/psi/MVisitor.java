@@ -7,15 +7,19 @@ import com.intellij.psi.PsiElement;
 
 public class MVisitor extends PsiElementVisitor {
 
-  public void visitApplyBraceList(@NotNull MApplyBraceList o) {
+  public void visitApplyArgs(@NotNull MApplyArgs o) {
     visitPsiElement(o);
   }
 
-  public void visitApplyBracketList(@NotNull MApplyBracketList o) {
+  public void visitApplyBraceArgs(@NotNull MApplyBraceArgs o) {
     visitPsiElement(o);
   }
 
-  public void visitApplyParenList(@NotNull MApplyParenList o) {
+  public void visitApplyBracketArgs(@NotNull MApplyBracketArgs o) {
+    visitPsiElement(o);
+  }
+
+  public void visitApplyParenArgs(@NotNull MApplyParenArgs o) {
     visitPsiElement(o);
   }
 
@@ -23,11 +27,23 @@ public class MVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitBraceList(@NotNull MBraceList o) {
+  public void visitAtomicExpr(@NotNull MAtomicExpr o) {
     visitPsiElement(o);
   }
 
-  public void visitBracketList(@NotNull MBracketList o) {
+  public void visitBraceArgs(@NotNull MBraceArgs o) {
+    visitPsiElement(o);
+  }
+
+  public void visitBraceExpr(@NotNull MBraceExpr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitBracketArgs(@NotNull MBracketArgs o) {
+    visitPsiElement(o);
+  }
+
+  public void visitBracketExpr(@NotNull MBracketExpr o) {
     visitPsiElement(o);
   }
 
@@ -35,11 +51,7 @@ public class MVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitIexpr(@NotNull MIexpr o) {
-    visitPsiElement(o);
-  }
-
-  public void visitIlist(@NotNull MIlist o) {
+  public void visitIndentExpr(@NotNull MIndentExpr o) {
     visitPsiElement(o);
   }
 
@@ -47,15 +59,27 @@ public class MVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitParenList(@NotNull MParenList o) {
+  public void visitParenArgs(@NotNull MParenArgs o) {
     visitPsiElement(o);
   }
 
-  public void visitSlist(@NotNull MSlist o) {
+  public void visitParenExpr(@NotNull MParenExpr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSdedent(@NotNull MSdedent o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSindent(@NotNull MSindent o) {
     visitPsiElement(o);
   }
 
   public void visitSspace(@NotNull MSspace o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSstatementBreak(@NotNull MSstatementBreak o) {
     visitPsiElement(o);
   }
 

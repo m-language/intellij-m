@@ -5,10 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MApplyParenList extends PsiElement {
-
-  @NotNull
-  MAtom getAtom();
+public interface MBraceArgs extends PsiElement {
 
   @NotNull
   List<MExpr> getExprList();

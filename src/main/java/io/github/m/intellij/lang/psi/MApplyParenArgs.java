@@ -5,15 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MExpr extends PsiElement {
+public interface MApplyParenArgs extends PsiElement {
 
   @NotNull
-  List<MApplyArgs> getApplyArgsList();
+  List<MParenArgs> getParenArgsList();
 
   @NotNull
-  MAtomicExpr getAtomicExpr();
-
-  @NotNull
-  List<MNosspace> getNosspaceList();
+  List<MWhitespace> getWhitespaceList();
 
 }

@@ -11,31 +11,19 @@ import static io.github.m.intellij.lang.lexer.MTokenTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.m.intellij.lang.psi.*;
 
-public class MExprImpl extends ASTWrapperPsiElement implements MExpr {
+public class MSstatementBreakImpl extends ASTWrapperPsiElement implements MSstatementBreak {
 
-  public MExprImpl(@NotNull ASTNode node) {
+  public MSstatementBreakImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MVisitor visitor) {
-    visitor.visitExpr(this);
+    visitor.visitSstatementBreak(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof MVisitor) accept((MVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<MApplyArgs> getApplyArgsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MApplyArgs.class);
-  }
-
-  @Override
-  @NotNull
-  public MAtomicExpr getAtomicExpr() {
-    return findNotNullChildByClass(MAtomicExpr.class);
   }
 
   @Override

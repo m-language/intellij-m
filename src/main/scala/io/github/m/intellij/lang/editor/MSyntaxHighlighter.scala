@@ -15,12 +15,14 @@ class MSyntaxHighlighter extends SyntaxHighlighterBase() {
     case COMMENT => Array(COMMENT_KEY)
     case DOC_COMMENT => Array(DOC_COMMENT_KEY)
     case TITLE_COMMENT => Array(TITLE_COMMENT_KEY)
+    case BLOCK_COMMENT => Array(BLOCK_COMMENT_KEY)
     case OPEN_PAREN | CLOSE_PAREN => Array(PAREN_KEY)
     case OPEN_BRACE | CLOSE_BRACE => Array(BRACE_KEY)
     case OPEN_BRACKET | CLOSE_BRACKET => Array(BRACKET_KEY)
     case IDENTIFIER => Array(IDENTIFIER_KEY)
     case STRING => Array(STRING_KEY)
     case NUMBER => Array(NUMBER_KEY)
+    case COMMA => Array(COMMA_KEY)
     case _ => Array.empty
   }
 
@@ -31,6 +33,7 @@ object MSyntaxHighlighter {
   val COMMENT_KEY: TextAttributesKey = createKey("M_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
   val DOC_COMMENT_KEY: TextAttributesKey = createKey("M_DOC_COMMENT", DefaultLanguageHighlighterColors.DOC_COMMENT)
   val TITLE_COMMENT_KEY: TextAttributesKey = createKey("M_TITLE_COMMENT", DefaultLanguageHighlighterColors.CONSTANT)
+  val BLOCK_COMMENT_KEY: TextAttributesKey = createKey("M_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT)
   val PAREN_KEY: TextAttributesKey = createKey("M_PAREN", DefaultLanguageHighlighterColors.PARENTHESES)
   val BRACE_KEY: TextAttributesKey = createKey("M_BRACE", DefaultLanguageHighlighterColors.BRACES)
   val BRACKET_KEY: TextAttributesKey = createKey("M_BRACKET", DefaultLanguageHighlighterColors.BRACKETS)
@@ -39,6 +42,8 @@ object MSyntaxHighlighter {
   val NUMBER_KEY: TextAttributesKey = createKey("M_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
   val KEYWORD_KEY: TextAttributesKey = createKey("M_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
   val FUNCTION_KEY: TextAttributesKey = createKey("M_FUNCTION", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)
+  val TEMPLATE_KEY: TextAttributesKey = createKey("M_TEMPLATE", DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR)
+  val COMMA_KEY: TextAttributesKey = createKey("M_COMMA", DefaultLanguageHighlighterColors.COMMA)
 
   def createKey(string: String, key: TextAttributesKey): TextAttributesKey =
     TextAttributesKey.createTextAttributesKey(string, key)

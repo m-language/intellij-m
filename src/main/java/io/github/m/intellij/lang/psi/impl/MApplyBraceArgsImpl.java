@@ -11,14 +11,14 @@ import static io.github.m.intellij.lang.lexer.MTokenTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.m.intellij.lang.psi.*;
 
-public class MParenListImpl extends ASTWrapperPsiElement implements MParenList {
+public class MApplyBraceArgsImpl extends ASTWrapperPsiElement implements MApplyBraceArgs {
 
-  public MParenListImpl(@NotNull ASTNode node) {
+  public MApplyBraceArgsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MVisitor visitor) {
-    visitor.visitParenList(this);
+    visitor.visitApplyBraceArgs(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,8 +28,8 @@ public class MParenListImpl extends ASTWrapperPsiElement implements MParenList {
 
   @Override
   @NotNull
-  public List<MExpr> getExprList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MExpr.class);
+  public List<MBraceArgs> getBraceArgsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MBraceArgs.class);
   }
 
   @Override

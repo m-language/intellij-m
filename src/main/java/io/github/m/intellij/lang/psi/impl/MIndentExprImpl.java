@@ -11,14 +11,14 @@ import static io.github.m.intellij.lang.lexer.MTokenTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.m.intellij.lang.psi.*;
 
-public class MExprImpl extends ASTWrapperPsiElement implements MExpr {
+public class MIndentExprImpl extends ASTWrapperPsiElement implements MIndentExpr {
 
-  public MExprImpl(@NotNull ASTNode node) {
+  public MIndentExprImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MVisitor visitor) {
-    visitor.visitExpr(this);
+    visitor.visitIndentExpr(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,20 +28,32 @@ public class MExprImpl extends ASTWrapperPsiElement implements MExpr {
 
   @Override
   @NotNull
-  public List<MApplyArgs> getApplyArgsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MApplyArgs.class);
+  public List<MExpr> getExprList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MExpr.class);
   }
 
   @Override
   @NotNull
-  public MAtomicExpr getAtomicExpr() {
-    return findNotNullChildByClass(MAtomicExpr.class);
+  public List<MIndentExpr> getIndentExprList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MIndentExpr.class);
+  }
+
+  @Override
+  @Nullable
+  public MSdedent getSdedent() {
+    return findChildByClass(MSdedent.class);
+  }
+
+  @Override
+  @Nullable
+  public MSindent getSindent() {
+    return findChildByClass(MSindent.class);
   }
 
   @Override
   @NotNull
-  public List<MNosspace> getNosspaceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MNosspace.class);
+  public List<MSstatementBreak> getSstatementBreakList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MSstatementBreak.class);
   }
 
 }

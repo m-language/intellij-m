@@ -11,25 +11,19 @@ import static io.github.m.intellij.lang.lexer.MTokenTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.m.intellij.lang.psi.*;
 
-public class MSlistImpl extends ASTWrapperPsiElement implements MSlist {
+public class MSdedentImpl extends ASTWrapperPsiElement implements MSdedent {
 
-  public MSlistImpl(@NotNull ASTNode node) {
+  public MSdedentImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MVisitor visitor) {
-    visitor.visitSlist(this);
+    visitor.visitSdedent(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof MVisitor) accept((MVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public List<MIexpr> getIexprList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MIexpr.class);
   }
 
   @Override

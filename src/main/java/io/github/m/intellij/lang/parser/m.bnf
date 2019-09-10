@@ -14,23 +14,33 @@
   tokenTypeClass="io.github.m.intellij.lang.lexer.MTokenType"
 }
 
-file ::= (whitespace* iexpr)* whitespace*
+file ::= (whitespace* indent_expr)* whitespace*
 
-iexpr ::= ilist | expr
-expr ::= paren_list | brace_list | bracket_list | apply_paren_list | apply_brace_list | apply_bracket_list | atom
+indent_expr ::= expr+ sstatement_break (sindent (indent_expr+ | sstatement_break)* sdedent)?
+              | expr
 
-ilist ::= (nosspace* expr)+ nosspace* STATEMENT_BREAK (nosspace* INDENT slist* nosspace* DEDENT)?
-slist ::= (nosspace* iexpr)+ | nosspace* STATEMENT_BREAK
+expr ::= nosspace* atomic_expr apply_args*
 
-paren_list ::= OPEN_PAREN (whitespace* expr)* whitespace* CLOSE_PAREN
-brace_list ::= OPEN_BRACE (whitespace* expr)* whitespace* CLOSE_BRACE
-bracket_list ::= OPEN_BRACKET (whitespace* expr)* whitespace* CLOSE_BRACKET
+atomic_expr ::= paren_expr | brace_expr | bracket_expr | atom
 
-apply_paren_list ::= atom OPEN_PAREN (whitespace* expr)* whitespace* CLOSE_PAREN
-apply_brace_list ::= atom OPEN_BRACE (whitespace* expr)* whitespace* CLOSE_BRACE
-apply_bracket_list ::= atom OPEN_BRACKET (whitespace* expr)* whitespace* CLOSE_BRACKET
+paren_expr ::= OPEN_PAREN paren_args? CLOSE_PAREN
+brace_expr ::= OPEN_BRACE brace_args? CLOSE_BRACE
+bracket_expr ::= OPEN_BRACKET bracket_args? CLOSE_BRACKET
+
+paren_args ::= (whitespace* expr)+ whitespace*
+brace_args ::= (whitespace* expr)+ whitespace*
+bracket_args ::= (whitespace* expr)+ whitespace*
+
+apply_args ::= apply_paren_args | apply_brace_args | apply_bracket_args
+apply_paren_args ::= OPEN_PAREN (paren_args COMMA?)* whitespace* CLOSE_PAREN
+apply_brace_args ::= OPEN_BRACE (brace_args COMMA?)* whitespace* CLOSE_BRACE
+apply_bracket_args ::= OPEN_BRACKET (bracket_args COMMA?)* whitespace* CLOSE_BRACKET
 
 atom ::= IDENTIFIER | STRING | NUMBER
+
+sindent ::= nosspace* INDENT
+sdedent ::= nosspace* DEDENT
+sstatement_break ::= nosspace* STATEMENT_BREAK
 
 whitespace ::= sspace | nosspace
 nosspace ::= SPACE | TAB | NEWLINE
