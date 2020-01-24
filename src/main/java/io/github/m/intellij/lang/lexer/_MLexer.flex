@@ -1,9 +1,8 @@
 package io.github.m.intellij.lang.lexer;
 
-import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.TokenType;
-import io.github.m.intellij.lang.lexer.*;
+import com.intellij.lexer.FlexLexer;
 
 %%
 
@@ -17,39 +16,50 @@ import io.github.m.intellij.lang.lexer.*;
     public _MLexer() {
         this(null);
     }
+
+    int depth = 0;
+    StringBuffer comment = new StringBuffer();
 %}
 
-COMMENT=("#"|";")[^\r\n]*
-DOC_COMMENT=("##"|";;")[^\r\n]*
-TITLE_COMMENT=("###"|";;;")[^\r\n]*
-BLOCK_COMMENT="#"+"{"[^\}]*"}"
+LINE_COMMENT=("#")[^(][^\r\n]*
+ALPHA_CHAR=[a-zA-Z0-9_/]
+SPECIAL_CHAR=[!$%&*+|:<=>?@\^~'=-]
 
-NUMBER="-"?[0-9\.]+
+NUMBER=[0-9][0-9\.]*
 STRING=\" ("\"\"" | [^\"])* \"
-IDENTIFIER=[^(){}\[\], \t\r\n\"\;]+
+IDENTIFIER={ALPHA_CHAR}({ALPHA_CHAR}|{SPECIAL_CHAR})*
+OPERATOR={SPECIAL_CHAR}({ALPHA_CHAR}|{SPECIAL_CHAR})*
+
+%state COMMENT
 
 %%
+<YYINITIAL> {
+  "(" { return MTokenTypes.OPEN_PAREN; }
+  ")" { return MTokenTypes.CLOSE_PAREN; }
+  "[" { return MTokenTypes.OPEN_BRACE; }
+  "]" { return MTokenTypes.CLOSE_BRACE; }
+  "{" { return MTokenTypes.OPEN_BRACKET; }
+  "}" { return MTokenTypes.CLOSE_BRACKET; }
 
-"(" { return MTokenTypes.OPEN_PAREN; }
-"{" { return MTokenTypes.OPEN_BRACE; }
-"[" { return MTokenTypes.OPEN_BRACKET; }
-")" { return MTokenTypes.CLOSE_PAREN; }
-"}" { return MTokenTypes.CLOSE_BRACE; }
-"]" { return MTokenTypes.CLOSE_BRACKET; }
+  "," { return MTokenTypes.COMMA; }
 
-"," { return MTokenTypes.COMMA; }
+  [ ] { return MTokenTypes.SPACE; }
+  [\t] { return MTokenTypes.TAB; }
+  [\n] { return MTokenTypes.NEWLINE; }
 
-[ ] { return MTokenTypes.SPACE; }
-[\t] { return MTokenTypes.TAB; }
-[\n] { return MTokenTypes.NEWLINE; }
+  {NUMBER} { return MTokenTypes.NUMBER; }
+  {STRING} { return MTokenTypes.STRING; }
+  {IDENTIFIER} { return MTokenTypes.IDENTIFIER; }
+  {OPERATOR} { return MTokenTypes.OPERATOR; }
 
-{BLOCK_COMMENT} { return MTokens.BLOCK_COMMENT; }
-{TITLE_COMMENT} { return MTokens.TITLE_COMMENT; }
-{DOC_COMMENT} { return MTokens.DOC_COMMENT; }
-{COMMENT} { return MTokens.COMMENT; }
+  "#(" { comment.setLength(0); yybegin(COMMENT); }
+  {LINE_COMMENT} { return MTokens.COMMENT; }
+}
 
-{NUMBER} { return MTokenTypes.NUMBER; }
-{STRING} { return MTokenTypes.STRING; }
-{IDENTIFIER} { return MTokenTypes.IDENTIFIER; }
+<COMMENT> {
+  "(" { depth++; return MTokens.COMMENT; }
+  ")" { if (depth == 0) yybegin(YYINITIAL); else depth--; return MTokens.COMMENT; }
+  [^()]+ { return MTokens.COMMENT; }
+}
 
 [^] { return TokenType.BAD_CHARACTER; }

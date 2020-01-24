@@ -11,14 +11,14 @@ import static io.github.m.intellij.lang.lexer.MTokenTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.m.intellij.lang.psi.*;
 
-public class MExprImpl extends ASTWrapperPsiElement implements MExpr {
+public class MApplyExprImpl extends ASTWrapperPsiElement implements MApplyExpr {
 
-  public MExprImpl(@NotNull ASTNode node) {
+  public MApplyExprImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MVisitor visitor) {
-    visitor.visitExpr(this);
+    visitor.visitApplyExpr(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,20 +28,32 @@ public class MExprImpl extends ASTWrapperPsiElement implements MExpr {
 
   @Override
   @NotNull
-  public List<MApplyArgs> getApplyArgsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MApplyArgs.class);
+  public List<MArgs> getArgsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MArgs.class);
+  }
+
+  @Override
+  @Nullable
+  public MBraceExpr getBraceExpr() {
+    return findChildByClass(MBraceExpr.class);
+  }
+
+  @Override
+  @Nullable
+  public MBracketExpr getBracketExpr() {
+    return findChildByClass(MBracketExpr.class);
+  }
+
+  @Override
+  @Nullable
+  public MParenExpr getParenExpr() {
+    return findChildByClass(MParenExpr.class);
   }
 
   @Override
   @NotNull
-  public MAtomicExpr getAtomicExpr() {
-    return findNotNullChildByClass(MAtomicExpr.class);
-  }
-
-  @Override
-  @NotNull
-  public List<MNosspace> getNosspaceList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MNosspace.class);
+  public List<MWhitespace> getWhitespaceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MWhitespace.class);
   }
 
 }

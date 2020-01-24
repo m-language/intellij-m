@@ -7,37 +7,32 @@ import io.github.m.intellij.lang.psi._
 
 class MAnnotator extends Annotator with DumbAware {
   override def annotate(element: PsiElement, holder: AnnotationHolder): Unit = element match {
-    case expr: MIndentExpr =>
-      if ((expr.getExprList.size() + expr.getIndentExprList.size()) > 1) {
-        val fn = expr.getExprList.get(0)
-        if (fn.getApplyArgsList.isEmpty && fn.getAtomicExpr.getAtom != null) {
-          holder.createInfoAnnotation(fn.getAtomicExpr.getAtom, null).setTextAttributes(MSyntaxHighlighter.KEYWORD_KEY)
+    case expr: MBlockExpr =>
+      if (expr.getOperationExprList.size() > 1 || !expr.getBlockExprList.isEmpty) {
+        val fn = expr.getOperationExprList.get(0)
+        if (fn.getApplyExpr != null &&
+          fn.getApplyExpr.getArgsList.isEmpty &&
+          fn.getOperationExpr == null &&
+          fn.getApplyExpr.getParenExpr != null &&
+          fn.getApplyExpr.getParenExpr.getAtom != null) {
+          holder.createInfoAnnotation(fn.getApplyExpr.getParenExpr.getAtom, null).setTextAttributes(MSyntaxHighlighter.KEYWORD_KEY)
         }
       }
-    case expr: MExpr =>
-      if (!expr.getApplyArgsList.isEmpty) {
-        if (expr.getAtomicExpr.getAtom != null) {
-          holder.createInfoAnnotation(expr.getAtomicExpr.getAtom, null).setTextAttributes(MSyntaxHighlighter.FUNCTION_KEY)
+    case expr: MApplyExpr =>
+      if (!expr.getArgsList.isEmpty) {
+        if (expr.getParenExpr.getAtom != null) {
+          holder.createInfoAnnotation(expr.getParenExpr.getAtom, null).setTextAttributes(MSyntaxHighlighter.FUNCTION_KEY)
         }
       }
-    case expr: MParenArgs =>
-      if (expr.getExprList.size() > 1) {
-        val fn = expr.getExprList.get(0)
-        if (fn.getApplyArgsList.isEmpty && fn.getAtomicExpr.getAtom != null) {
-          holder.createInfoAnnotation(fn.getAtomicExpr.getAtom, null).setTextAttributes(MSyntaxHighlighter.KEYWORD_KEY)
+    case expr: MArgs =>
+      if (expr.getOperationExprList.size() > 1) {
+        val fn = expr.getOperationExprList.get(0)
+        if (fn.getApplyExpr != null &&
+          fn.getApplyExpr.getParenExpr != null &&
+          fn.getApplyExpr.getParenExpr.getAtom != null) {
+          holder.createInfoAnnotation(fn.getApplyExpr.getParenExpr.getAtom, null).setTextAttributes(MSyntaxHighlighter.KEYWORD_KEY)
         }
       }
-    case expr: MBraceArgs =>
-      for (x <- 0 until expr.getExprList.size()) {
-        val fn = expr.getExprList.get(x)
-        if (x % 2 == 1 && fn.getAtomicExpr.getAtom != null) {
-          holder.createInfoAnnotation(fn.getAtomicExpr.getAtom, null).setTextAttributes(MSyntaxHighlighter.FUNCTION_KEY)
-        }
-      }
-    case expr: MBracketExpr =>
-      holder.createInfoAnnotation(expr, null).setTextAttributes(MSyntaxHighlighter.TEMPLATE_KEY)
-    case expr: MApplyBracketArgs =>
-      holder.createInfoAnnotation(expr, null).setTextAttributes(MSyntaxHighlighter.TEMPLATE_KEY)
     case _ =>
   }
 }

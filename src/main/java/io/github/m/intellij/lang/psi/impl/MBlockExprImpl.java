@@ -11,14 +11,14 @@ import static io.github.m.intellij.lang.lexer.MTokenTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import io.github.m.intellij.lang.psi.*;
 
-public class MIndentExprImpl extends ASTWrapperPsiElement implements MIndentExpr {
+public class MBlockExprImpl extends ASTWrapperPsiElement implements MBlockExpr {
 
-  public MIndentExprImpl(@NotNull ASTNode node) {
+  public MBlockExprImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull MVisitor visitor) {
-    visitor.visitIndentExpr(this);
+    visitor.visitBlockExpr(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
@@ -28,14 +28,20 @@ public class MIndentExprImpl extends ASTWrapperPsiElement implements MIndentExpr
 
   @Override
   @NotNull
-  public List<MExpr> getExprList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MExpr.class);
+  public List<MBlockExpr> getBlockExprList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MBlockExpr.class);
   }
 
   @Override
   @NotNull
-  public List<MIndentExpr> getIndentExprList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MIndentExpr.class);
+  public List<MNosspace> getNosspaceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MNosspace.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MOperationExpr> getOperationExprList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MOperationExpr.class);
   }
 
   @Override
@@ -51,9 +57,9 @@ public class MIndentExprImpl extends ASTWrapperPsiElement implements MIndentExpr
   }
 
   @Override
-  @NotNull
-  public List<MSstatementBreak> getSstatementBreakList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MSstatementBreak.class);
+  @Nullable
+  public MSstatementBreak getSstatementBreak() {
+    return findChildByClass(MSstatementBreak.class);
   }
 
 }

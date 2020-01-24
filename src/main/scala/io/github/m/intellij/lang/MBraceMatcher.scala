@@ -14,7 +14,7 @@ class MBraceMatcher extends PairedBraceMatcher {
 }
 
 object MBraceMatcher {
-  val pairs = Array(
+  val pairs: Array[BracePair] = Array(
     new BracePair(MTokenTypes.OPEN_PAREN, MTokenTypes.CLOSE_PAREN, false),
     new BracePair(MTokenTypes.OPEN_BRACE, MTokenTypes.CLOSE_BRACE, false),
     new BracePair(MTokenTypes.OPEN_BRACKET, MTokenTypes.CLOSE_BRACKET, false)

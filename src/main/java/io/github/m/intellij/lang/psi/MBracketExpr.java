@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface MBracketExpr extends PsiElement {
 
   @Nullable
-  MBracketArgs getBracketArgs();
+  MAtom getAtom();
+
+  @Nullable
+  MList getList();
+
+  @NotNull
+  List<MWhitespace> getWhitespaceList();
 
 }

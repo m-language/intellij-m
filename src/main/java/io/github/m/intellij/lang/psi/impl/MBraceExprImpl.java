@@ -28,8 +28,20 @@ public class MBraceExprImpl extends ASTWrapperPsiElement implements MBraceExpr {
 
   @Override
   @Nullable
-  public MBraceArgs getBraceArgs() {
-    return findChildByClass(MBraceArgs.class);
+  public MAtom getAtom() {
+    return findChildByClass(MAtom.class);
+  }
+
+  @Override
+  @Nullable
+  public MList getList() {
+    return findChildByClass(MList.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MWhitespace> getWhitespaceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MWhitespace.class);
   }
 
 }

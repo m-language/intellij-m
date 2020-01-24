@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface MParenExpr extends PsiElement {
 
   @Nullable
-  MParenArgs getParenArgs();
+  MArgs getArgs();
+
+  @Nullable
+  MAtom getAtom();
+
+  @NotNull
+  List<MWhitespace> getWhitespaceList();
 
 }

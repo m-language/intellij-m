@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface MBraceExpr extends PsiElement {
 
   @Nullable
-  MBraceArgs getBraceArgs();
+  MAtom getAtom();
+
+  @Nullable
+  MList getList();
+
+  @NotNull
+  List<MWhitespace> getWhitespaceList();
 
 }

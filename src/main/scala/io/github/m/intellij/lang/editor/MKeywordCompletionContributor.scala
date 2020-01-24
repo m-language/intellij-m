@@ -16,7 +16,7 @@ class MKeywordCompletionContributor extends CompletionContributor {
         override def addCompletions(parameters: CompletionParameters, context: ProcessingContext, result: CompletionResultSet): Unit = {
           result.addElement(LookupElementBuilder.create("def"))
           result.addElement(LookupElementBuilder.create("fn"))
-          result.addElement(LookupElementBuilder.create("macro"))
+          result.addElement(LookupElementBuilder.create("fm"))
         }
       }
     )

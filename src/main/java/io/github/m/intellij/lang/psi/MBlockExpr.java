@@ -5,13 +5,16 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MIndentExpr extends PsiElement {
+public interface MBlockExpr extends PsiElement {
 
   @NotNull
-  List<MExpr> getExprList();
+  List<MBlockExpr> getBlockExprList();
 
   @NotNull
-  List<MIndentExpr> getIndentExprList();
+  List<MNosspace> getNosspaceList();
+
+  @NotNull
+  List<MOperationExpr> getOperationExprList();
 
   @Nullable
   MSdedent getSdedent();
@@ -19,7 +22,7 @@ public interface MIndentExpr extends PsiElement {
   @Nullable
   MSindent getSindent();
 
-  @NotNull
-  List<MSstatementBreak> getSstatementBreakList();
+  @Nullable
+  MSstatementBreak getSstatementBreak();
 
 }

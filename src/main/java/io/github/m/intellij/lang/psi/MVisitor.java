@@ -7,19 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public class MVisitor extends PsiElementVisitor {
 
-  public void visitApplyArgs(@NotNull MApplyArgs o) {
+  public void visitApplyExpr(@NotNull MApplyExpr o) {
     visitPsiElement(o);
   }
 
-  public void visitApplyBraceArgs(@NotNull MApplyBraceArgs o) {
-    visitPsiElement(o);
-  }
-
-  public void visitApplyBracketArgs(@NotNull MApplyBracketArgs o) {
-    visitPsiElement(o);
-  }
-
-  public void visitApplyParenArgs(@NotNull MApplyParenArgs o) {
+  public void visitArgs(@NotNull MArgs o) {
     visitPsiElement(o);
   }
 
@@ -27,11 +19,7 @@ public class MVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitAtomicExpr(@NotNull MAtomicExpr o) {
-    visitPsiElement(o);
-  }
-
-  public void visitBraceArgs(@NotNull MBraceArgs o) {
+  public void visitBlockExpr(@NotNull MBlockExpr o) {
     visitPsiElement(o);
   }
 
@@ -39,19 +27,11 @@ public class MVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitBracketArgs(@NotNull MBracketArgs o) {
-    visitPsiElement(o);
-  }
-
   public void visitBracketExpr(@NotNull MBracketExpr o) {
     visitPsiElement(o);
   }
 
-  public void visitExpr(@NotNull MExpr o) {
-    visitPsiElement(o);
-  }
-
-  public void visitIndentExpr(@NotNull MIndentExpr o) {
+  public void visitList(@NotNull MList o) {
     visitPsiElement(o);
   }
 
@@ -59,7 +39,7 @@ public class MVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitParenArgs(@NotNull MParenArgs o) {
+  public void visitOperationExpr(@NotNull MOperationExpr o) {
     visitPsiElement(o);
   }
 

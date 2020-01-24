@@ -5,10 +5,10 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MApplyBraceArgs extends PsiElement {
+public interface MArgs extends PsiElement {
 
   @NotNull
-  List<MBraceArgs> getBraceArgsList();
+  List<MOperationExpr> getOperationExprList();
 
   @NotNull
   List<MWhitespace> getWhitespaceList();

@@ -2,10 +2,9 @@
 
 package io.github.m.intellij.lang.lexer;
 
-import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.TokenType;
-import io.github.m.intellij.lang.lexer.*;
+import com.intellij.lexer.FlexLexer;
 
 
 /**
@@ -23,6 +22,7 @@ class _MLexer implements FlexLexer {
 
   /** lexical states */
   public static final int YYINITIAL = 0;
+  public static final int BLOCK_COMMENT = 2;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -31,7 +31,7 @@ class _MLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = { 
-     0, 0
+     0,  0,  1, 1
   };
 
   /** 
@@ -53,8 +53,9 @@ class _MLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 256 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\1\11\1\20\2\0\1\3\22\0\1\17\1\0\1\10\1\1\4\0\1\12\1\14\2\0\1\16\1\6"+
-    "\1\7\1\0\12\7\1\0\1\2\37\0\1\13\1\0\1\15\35\0\1\4\1\0\1\5\202\0");
+    "\11\0\1\20\1\21\2\0\1\3\22\0\1\17\1\5\1\10\1\1\4\5\1\2\1\11\2\5\1\16\1\5\1"+
+    "\7\1\5\12\6\1\5\1\0\5\5\32\4\1\12\1\0\1\13\1\5\1\4\1\0\32\4\1\14\1\5\1\15"+
+    "\1\5\201\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -62,13 +63,12 @@ class _MLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\2\2\1\3\1\4\1\5\1\1\1\6"+
-    "\1\3\1\7\1\10\1\11\1\12\1\13\1\14\1\15"+
-    "\1\16\1\2\1\17\1\2\1\17\1\0\1\20\1\17"+
-    "\1\21\1\17\1\0\1\22\2\21\3\22";
+    "\2\0\2\1\1\2\1\3\1\4\1\5\1\1\1\6"+
+    "\1\7\1\10\1\11\1\12\1\13\1\14\1\15\1\16"+
+    "\1\17\1\20\1\21\1\17\1\22\1\0\1\23";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[34];
+    int [] result = new int[25];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -93,14 +93,13 @@ class _MLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\21\0\42\0\63\0\104\0\104\0\104\0\125"+
-    "\0\125\0\146\0\104\0\104\0\104\0\104\0\104\0\104"+
-    "\0\104\0\104\0\167\0\210\0\231\0\252\0\146\0\273"+
-    "\0\314\0\335\0\356\0\377\0\167\0\u0110\0\u0121\0\314"+
-    "\0\104\0\u0110";
+    "\0\0\0\22\0\44\0\66\0\44\0\110\0\132\0\154"+
+    "\0\176\0\44\0\44\0\44\0\44\0\44\0\44\0\44"+
+    "\0\44\0\44\0\220\0\44\0\44\0\242\0\44\0\176"+
+    "\0\264";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[34];
+    int [] result = new int[25];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -123,21 +122,16 @@ class _MLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\4\1\5\1\6\1\7\1\10\1\11"+
-    "\1\12\1\13\1\14\1\15\1\16\1\17\1\20\1\21"+
-    "\1\22\2\2\4\0\2\2\11\0\1\23\1\24\1\23"+
-    "\1\0\1\25\13\23\1\0\2\23\1\26\1\0\14\23"+
-    "\22\0\2\2\4\0\1\2\1\11\11\0\10\27\1\30"+
-    "\10\27\3\23\1\0\14\23\1\0\1\31\1\32\1\31"+
-    "\1\0\1\33\13\31\1\0\3\25\1\34\1\25\1\35"+
-    "\12\25\1\34\2\31\1\36\1\0\14\31\11\0\1\27"+
-    "\10\0\3\31\1\0\14\31\1\0\1\36\1\32\1\36"+
-    "\1\0\1\37\13\36\1\0\3\33\1\34\1\33\1\40"+
-    "\12\33\6\34\1\41\13\34\3\36\1\0\14\36\1\0"+
-    "\3\37\1\34\1\37\1\42\12\37\1\34";
+    "\1\3\1\4\1\5\1\3\1\6\1\7\1\10\1\7"+
+    "\1\11\1\12\1\13\1\14\1\15\1\16\1\17\1\20"+
+    "\1\21\1\22\2\23\1\24\6\23\1\25\10\23\22\0"+
+    "\2\26\1\27\17\26\4\0\4\6\16\0\4\7\16\0"+
+    "\2\6\2\10\12\0\10\30\1\31\11\30\2\23\1\0"+
+    "\6\23\1\0\10\23\3\26\1\0\15\26\11\0\1\30"+
+    "\11\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[306];
+    int [] result = new int[198];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -175,11 +169,11 @@ class _MLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\3\1\3\11\3\1\10\11\4\1\1\0\4\1"+
-    "\1\0\4\1\1\11\1\1";
+    "\2\0\1\11\1\1\1\11\4\1\11\11\1\1\2\11"+
+    "\1\1\1\11\1\0\1\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[34];
+    int [] result = new int[25];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -238,6 +232,9 @@ class _MLexer implements FlexLexer {
     public _MLexer() {
         this(null);
     }
+
+    int depth = 0;
+    StringBuffer comment = new StringBuffer();
 
 
   /**
@@ -485,95 +482,100 @@ class _MLexer implements FlexLexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { return MTokenTypes.IDENTIFIER;
-            } 
-            // fall through
-          case 19: break;
-          case 2: 
-            { return MTokens.COMMENT;
-            } 
-            // fall through
-          case 20: break;
-          case 3: 
             { return TokenType.BAD_CHARACTER;
             } 
             // fall through
+          case 20: break;
+          case 2: 
+            { return MTokenTypes.OPEN_PAREN;
+            } 
+            // fall through
           case 21: break;
-          case 4: 
-            { return MTokenTypes.OPEN_BRACE;
+          case 3: 
+            { return MTokenTypes.IDENTIFIER;
             } 
             // fall through
           case 22: break;
-          case 5: 
-            { return MTokenTypes.CLOSE_BRACE;
+          case 4: 
+            { return MTokenTypes.OPERATOR;
             } 
             // fall through
           case 23: break;
-          case 6: 
+          case 5: 
             { return MTokenTypes.NUMBER;
             } 
             // fall through
           case 24: break;
-          case 7: 
-            { return MTokenTypes.TAB;
+          case 6: 
+            { return MTokenTypes.CLOSE_PAREN;
             } 
             // fall through
           case 25: break;
-          case 8: 
-            { return MTokenTypes.OPEN_PAREN;
+          case 7: 
+            { return MTokenTypes.OPEN_BRACE;
             } 
             // fall through
           case 26: break;
+          case 8: 
+            { return MTokenTypes.CLOSE_BRACE;
+            } 
+            // fall through
+          case 27: break;
           case 9: 
             { return MTokenTypes.OPEN_BRACKET;
             } 
             // fall through
-          case 27: break;
-          case 10: 
-            { return MTokenTypes.CLOSE_PAREN;
-            } 
-            // fall through
           case 28: break;
-          case 11: 
+          case 10: 
             { return MTokenTypes.CLOSE_BRACKET;
             } 
             // fall through
           case 29: break;
-          case 12: 
+          case 11: 
             { return MTokenTypes.COMMA;
             } 
             // fall through
           case 30: break;
-          case 13: 
+          case 12: 
             { return MTokenTypes.SPACE;
             } 
             // fall through
           case 31: break;
+          case 13: 
+            { return MTokenTypes.TAB;
+            } 
+            // fall through
+          case 32: break;
           case 14: 
             { return MTokenTypes.NEWLINE;
             } 
             // fall through
-          case 32: break;
-          case 15: 
-            { return MTokens.DOC_COMMENT;
-            } 
-            // fall through
           case 33: break;
-          case 16: 
-            { return MTokenTypes.STRING;
+          case 15: 
+            { return MTokens.COMMENT;
             } 
             // fall through
           case 34: break;
-          case 17: 
-            { return MTokens.TITLE_COMMENT;
+          case 16: 
+            { depth++; return MTokens.COMMENT;
             } 
             // fall through
           case 35: break;
-          case 18: 
-            { return MTokens.BLOCK_COMMENT;
+          case 17: 
+            { if (depth == 0) yybegin(YYINITIAL); else depth--; return MTokens.COMMENT;
             } 
             // fall through
           case 36: break;
+          case 18: 
+            { comment.setLength(0); yybegin(BLOCK_COMMENT);
+            } 
+            // fall through
+          case 37: break;
+          case 19: 
+            { return MTokenTypes.STRING;
+            } 
+            // fall through
+          case 38: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }

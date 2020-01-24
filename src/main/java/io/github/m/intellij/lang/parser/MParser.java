@@ -36,179 +36,159 @@ public class MParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // apply_paren_args | apply_brace_args | apply_bracket_args
-  public static boolean apply_args(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_args")) return false;
+  // (paren_expr | brace_expr | bracket_expr) (OPEN_PAREN (whitespace* args COMMA?)* whitespace* CLOSE_PAREN)*
+  public static boolean apply_expr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "apply_expr")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, APPLY_ARGS, "<apply args>");
-    r = apply_paren_args(b, l + 1);
-    if (!r) r = apply_brace_args(b, l + 1);
-    if (!r) r = apply_bracket_args(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, APPLY_EXPR, "<apply expr>");
+    r = apply_expr_0(b, l + 1);
+    r = r && apply_expr_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  /* ********************************************************** */
-  // OPEN_BRACE (brace_args COMMA?)* whitespace* CLOSE_BRACE
-  public static boolean apply_brace_args(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_brace_args")) return false;
-    if (!nextTokenIs(b, OPEN_BRACE)) return false;
+  // paren_expr | brace_expr | bracket_expr
+  private static boolean apply_expr_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "apply_expr_0")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OPEN_BRACE);
-    r = r && apply_brace_args_1(b, l + 1);
-    r = r && apply_brace_args_2(b, l + 1);
-    r = r && consumeToken(b, CLOSE_BRACE);
-    exit_section_(b, m, APPLY_BRACE_ARGS, r);
+    r = paren_expr(b, l + 1);
+    if (!r) r = brace_expr(b, l + 1);
+    if (!r) r = bracket_expr(b, l + 1);
     return r;
   }
 
-  // (brace_args COMMA?)*
-  private static boolean apply_brace_args_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_brace_args_1")) return false;
+  // (OPEN_PAREN (whitespace* args COMMA?)* whitespace* CLOSE_PAREN)*
+  private static boolean apply_expr_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "apply_expr_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!apply_brace_args_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "apply_brace_args_1", c)) break;
+      if (!apply_expr_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "apply_expr_1", c)) break;
     }
     return true;
   }
 
-  // brace_args COMMA?
-  private static boolean apply_brace_args_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_brace_args_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = brace_args(b, l + 1);
-    r = r && apply_brace_args_1_0_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // COMMA?
-  private static boolean apply_brace_args_1_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_brace_args_1_0_1")) return false;
-    consumeToken(b, COMMA);
-    return true;
-  }
-
-  // whitespace*
-  private static boolean apply_brace_args_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_brace_args_2")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!whitespace(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "apply_brace_args_2", c)) break;
-    }
-    return true;
-  }
-
-  /* ********************************************************** */
-  // OPEN_BRACKET (bracket_args COMMA?)* whitespace* CLOSE_BRACKET
-  public static boolean apply_bracket_args(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_bracket_args")) return false;
-    if (!nextTokenIs(b, OPEN_BRACKET)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OPEN_BRACKET);
-    r = r && apply_bracket_args_1(b, l + 1);
-    r = r && apply_bracket_args_2(b, l + 1);
-    r = r && consumeToken(b, CLOSE_BRACKET);
-    exit_section_(b, m, APPLY_BRACKET_ARGS, r);
-    return r;
-  }
-
-  // (bracket_args COMMA?)*
-  private static boolean apply_bracket_args_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_bracket_args_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!apply_bracket_args_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "apply_bracket_args_1", c)) break;
-    }
-    return true;
-  }
-
-  // bracket_args COMMA?
-  private static boolean apply_bracket_args_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_bracket_args_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = bracket_args(b, l + 1);
-    r = r && apply_bracket_args_1_0_1(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // COMMA?
-  private static boolean apply_bracket_args_1_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_bracket_args_1_0_1")) return false;
-    consumeToken(b, COMMA);
-    return true;
-  }
-
-  // whitespace*
-  private static boolean apply_bracket_args_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_bracket_args_2")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!whitespace(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "apply_bracket_args_2", c)) break;
-    }
-    return true;
-  }
-
-  /* ********************************************************** */
-  // OPEN_PAREN (paren_args COMMA?)* whitespace* CLOSE_PAREN
-  public static boolean apply_paren_args(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_paren_args")) return false;
-    if (!nextTokenIs(b, OPEN_PAREN)) return false;
+  // OPEN_PAREN (whitespace* args COMMA?)* whitespace* CLOSE_PAREN
+  private static boolean apply_expr_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "apply_expr_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OPEN_PAREN);
-    r = r && apply_paren_args_1(b, l + 1);
-    r = r && apply_paren_args_2(b, l + 1);
+    r = r && apply_expr_1_0_1(b, l + 1);
+    r = r && apply_expr_1_0_2(b, l + 1);
     r = r && consumeToken(b, CLOSE_PAREN);
-    exit_section_(b, m, APPLY_PAREN_ARGS, r);
-    return r;
-  }
-
-  // (paren_args COMMA?)*
-  private static boolean apply_paren_args_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_paren_args_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!apply_paren_args_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "apply_paren_args_1", c)) break;
-    }
-    return true;
-  }
-
-  // paren_args COMMA?
-  private static boolean apply_paren_args_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_paren_args_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = paren_args(b, l + 1);
-    r = r && apply_paren_args_1_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
+  // (whitespace* args COMMA?)*
+  private static boolean apply_expr_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "apply_expr_1_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!apply_expr_1_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "apply_expr_1_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // whitespace* args COMMA?
+  private static boolean apply_expr_1_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "apply_expr_1_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = apply_expr_1_0_1_0_0(b, l + 1);
+    r = r && args(b, l + 1);
+    r = r && apply_expr_1_0_1_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // whitespace*
+  private static boolean apply_expr_1_0_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "apply_expr_1_0_1_0_0")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "apply_expr_1_0_1_0_0", c)) break;
+    }
+    return true;
+  }
+
   // COMMA?
-  private static boolean apply_paren_args_1_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_paren_args_1_0_1")) return false;
+  private static boolean apply_expr_1_0_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "apply_expr_1_0_1_0_2")) return false;
     consumeToken(b, COMMA);
     return true;
   }
 
   // whitespace*
-  private static boolean apply_paren_args_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "apply_paren_args_2")) return false;
+  private static boolean apply_expr_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "apply_expr_1_0_2")) return false;
     while (true) {
       int c = current_position_(b);
       if (!whitespace(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "apply_paren_args_2", c)) break;
+      if (!empty_element_parsed_guard_(b, "apply_expr_1_0_2", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // (operation_expr whitespace*)+ whitespace*
+  public static boolean args(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "args")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ARGS, "<args>");
+    r = args_0(b, l + 1);
+    r = r && args_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (operation_expr whitespace*)+
+  private static boolean args_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "args_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = args_0_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!args_0_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "args_0", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // operation_expr whitespace*
+  private static boolean args_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "args_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = operation_expr(b, l + 1);
+    r = r && args_0_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // whitespace*
+  private static boolean args_0_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "args_0_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "args_0_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // whitespace*
+  private static boolean args_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "args_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "args_1", c)) break;
     }
     return true;
   }
@@ -227,218 +207,251 @@ public class MParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // paren_expr | brace_expr | bracket_expr | atom
-  public static boolean atomic_expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "atomic_expr")) return false;
+  // operation_expr ((nosspace* operation_expr)* sstatement_break (sindent (nosspace* block_expr)* sdedent)?)?
+  public static boolean block_expr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, ATOMIC_EXPR, "<atomic expr>");
-    r = paren_expr(b, l + 1);
-    if (!r) r = brace_expr(b, l + 1);
-    if (!r) r = bracket_expr(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, BLOCK_EXPR, "<block expr>");
+    r = operation_expr(b, l + 1);
+    r = r && block_expr_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ((nosspace* operation_expr)* sstatement_break (sindent (nosspace* block_expr)* sdedent)?)?
+  private static boolean block_expr_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr_1")) return false;
+    block_expr_1_0(b, l + 1);
+    return true;
+  }
+
+  // (nosspace* operation_expr)* sstatement_break (sindent (nosspace* block_expr)* sdedent)?
+  private static boolean block_expr_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = block_expr_1_0_0(b, l + 1);
+    r = r && sstatement_break(b, l + 1);
+    r = r && block_expr_1_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (nosspace* operation_expr)*
+  private static boolean block_expr_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr_1_0_0")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!block_expr_1_0_0_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "block_expr_1_0_0", c)) break;
+    }
+    return true;
+  }
+
+  // nosspace* operation_expr
+  private static boolean block_expr_1_0_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr_1_0_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = block_expr_1_0_0_0_0(b, l + 1);
+    r = r && operation_expr(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // nosspace*
+  private static boolean block_expr_1_0_0_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr_1_0_0_0_0")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!nosspace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "block_expr_1_0_0_0_0", c)) break;
+    }
+    return true;
+  }
+
+  // (sindent (nosspace* block_expr)* sdedent)?
+  private static boolean block_expr_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr_1_0_2")) return false;
+    block_expr_1_0_2_0(b, l + 1);
+    return true;
+  }
+
+  // sindent (nosspace* block_expr)* sdedent
+  private static boolean block_expr_1_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr_1_0_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = sindent(b, l + 1);
+    r = r && block_expr_1_0_2_0_1(b, l + 1);
+    r = r && sdedent(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (nosspace* block_expr)*
+  private static boolean block_expr_1_0_2_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr_1_0_2_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!block_expr_1_0_2_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "block_expr_1_0_2_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // nosspace* block_expr
+  private static boolean block_expr_1_0_2_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr_1_0_2_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = block_expr_1_0_2_0_1_0_0(b, l + 1);
+    r = r && block_expr(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // nosspace*
+  private static boolean block_expr_1_0_2_0_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "block_expr_1_0_2_0_1_0_0")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!nosspace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "block_expr_1_0_2_0_1_0_0", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
+  // OPEN_BRACE whitespace* (list | OPERATOR)? whitespace* CLOSE_BRACE | atom
+  public static boolean brace_expr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "brace_expr")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, BRACE_EXPR, "<brace expr>");
+    r = brace_expr_0(b, l + 1);
     if (!r) r = atom(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  /* ********************************************************** */
-  // (whitespace* expr)+ whitespace*
-  public static boolean brace_args(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "brace_args")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, BRACE_ARGS, "<brace args>");
-    r = brace_args_0(b, l + 1);
-    r = r && brace_args_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // (whitespace* expr)+
-  private static boolean brace_args_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "brace_args_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = brace_args_0_0(b, l + 1);
-    while (r) {
-      int c = current_position_(b);
-      if (!brace_args_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "brace_args_0", c)) break;
-    }
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // whitespace* expr
-  private static boolean brace_args_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "brace_args_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = brace_args_0_0_0(b, l + 1);
-    r = r && expr(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // whitespace*
-  private static boolean brace_args_0_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "brace_args_0_0_0")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!whitespace(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "brace_args_0_0_0", c)) break;
-    }
-    return true;
-  }
-
-  // whitespace*
-  private static boolean brace_args_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "brace_args_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!whitespace(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "brace_args_1", c)) break;
-    }
-    return true;
-  }
-
-  /* ********************************************************** */
-  // OPEN_BRACE brace_args? CLOSE_BRACE
-  public static boolean brace_expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "brace_expr")) return false;
-    if (!nextTokenIs(b, OPEN_BRACE)) return false;
+  // OPEN_BRACE whitespace* (list | OPERATOR)? whitespace* CLOSE_BRACE
+  private static boolean brace_expr_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "brace_expr_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OPEN_BRACE);
-    r = r && brace_expr_1(b, l + 1);
+    r = r && brace_expr_0_1(b, l + 1);
+    r = r && brace_expr_0_2(b, l + 1);
+    r = r && brace_expr_0_3(b, l + 1);
     r = r && consumeToken(b, CLOSE_BRACE);
-    exit_section_(b, m, BRACE_EXPR, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
-  // brace_args?
-  private static boolean brace_expr_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "brace_expr_1")) return false;
-    brace_args(b, l + 1);
+  // whitespace*
+  private static boolean brace_expr_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "brace_expr_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "brace_expr_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // (list | OPERATOR)?
+  private static boolean brace_expr_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "brace_expr_0_2")) return false;
+    brace_expr_0_2_0(b, l + 1);
+    return true;
+  }
+
+  // list | OPERATOR
+  private static boolean brace_expr_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "brace_expr_0_2_0")) return false;
+    boolean r;
+    r = list(b, l + 1);
+    if (!r) r = consumeToken(b, OPERATOR);
+    return r;
+  }
+
+  // whitespace*
+  private static boolean brace_expr_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "brace_expr_0_3")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "brace_expr_0_3", c)) break;
+    }
     return true;
   }
 
   /* ********************************************************** */
-  // (whitespace* expr)+ whitespace*
-  public static boolean bracket_args(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bracket_args")) return false;
+  // OPEN_BRACKET whitespace* (list | OPERATOR)? whitespace* CLOSE_BRACKET | atom
+  public static boolean bracket_expr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bracket_expr")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, BRACKET_ARGS, "<bracket args>");
-    r = bracket_args_0(b, l + 1);
-    r = r && bracket_args_1(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, BRACKET_EXPR, "<bracket expr>");
+    r = bracket_expr_0(b, l + 1);
+    if (!r) r = atom(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // (whitespace* expr)+
-  private static boolean bracket_args_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bracket_args_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = bracket_args_0_0(b, l + 1);
-    while (r) {
-      int c = current_position_(b);
-      if (!bracket_args_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "bracket_args_0", c)) break;
-    }
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // whitespace* expr
-  private static boolean bracket_args_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bracket_args_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = bracket_args_0_0_0(b, l + 1);
-    r = r && expr(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // whitespace*
-  private static boolean bracket_args_0_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bracket_args_0_0_0")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!whitespace(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "bracket_args_0_0_0", c)) break;
-    }
-    return true;
-  }
-
-  // whitespace*
-  private static boolean bracket_args_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bracket_args_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!whitespace(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "bracket_args_1", c)) break;
-    }
-    return true;
-  }
-
-  /* ********************************************************** */
-  // OPEN_BRACKET bracket_args? CLOSE_BRACKET
-  public static boolean bracket_expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bracket_expr")) return false;
-    if (!nextTokenIs(b, OPEN_BRACKET)) return false;
+  // OPEN_BRACKET whitespace* (list | OPERATOR)? whitespace* CLOSE_BRACKET
+  private static boolean bracket_expr_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bracket_expr_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, OPEN_BRACKET);
-    r = r && bracket_expr_1(b, l + 1);
+    r = r && bracket_expr_0_1(b, l + 1);
+    r = r && bracket_expr_0_2(b, l + 1);
+    r = r && bracket_expr_0_3(b, l + 1);
     r = r && consumeToken(b, CLOSE_BRACKET);
-    exit_section_(b, m, BRACKET_EXPR, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
-  // bracket_args?
-  private static boolean bracket_expr_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "bracket_expr_1")) return false;
-    bracket_args(b, l + 1);
+  // whitespace*
+  private static boolean bracket_expr_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bracket_expr_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "bracket_expr_0_1", c)) break;
+    }
     return true;
   }
 
-  /* ********************************************************** */
-  // nosspace* atomic_expr apply_args*
-  public static boolean expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr")) return false;
+  // (list | OPERATOR)?
+  private static boolean bracket_expr_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bracket_expr_0_2")) return false;
+    bracket_expr_0_2_0(b, l + 1);
+    return true;
+  }
+
+  // list | OPERATOR
+  private static boolean bracket_expr_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bracket_expr_0_2_0")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, EXPR, "<expr>");
-    r = expr_0(b, l + 1);
-    r = r && atomic_expr(b, l + 1);
-    r = r && expr_2(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    r = list(b, l + 1);
+    if (!r) r = consumeToken(b, OPERATOR);
     return r;
   }
 
-  // nosspace*
-  private static boolean expr_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_0")) return false;
+  // whitespace*
+  private static boolean bracket_expr_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "bracket_expr_0_3")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!nosspace(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "expr_0", c)) break;
-    }
-    return true;
-  }
-
-  // apply_args*
-  private static boolean expr_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_2")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!apply_args(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "expr_2", c)) break;
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "bracket_expr_0_3", c)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
-  // (whitespace* indent_expr)* whitespace*
+  // (whitespace* block_expr)* whitespace*
   static boolean file(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "file")) return false;
     boolean r;
@@ -449,7 +462,7 @@ public class MParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (whitespace* indent_expr)*
+  // (whitespace* block_expr)*
   private static boolean file_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "file_0")) return false;
     while (true) {
@@ -460,13 +473,13 @@ public class MParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // whitespace* indent_expr
+  // whitespace* block_expr
   private static boolean file_0_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "file_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = file_0_0_0(b, l + 1);
-    r = r && indent_expr(b, l + 1);
+    r = r && block_expr(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -494,99 +507,63 @@ public class MParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // expr+ sstatement_break (sindent (indent_expr+ | sstatement_break)* sdedent)?
-  //               | expr
-  public static boolean indent_expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indent_expr")) return false;
+  // (operation_expr whitespace*)+ whitespace*
+  public static boolean list(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "list")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, INDENT_EXPR, "<indent expr>");
-    r = indent_expr_0(b, l + 1);
-    if (!r) r = expr(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, LIST, "<list>");
+    r = list_0(b, l + 1);
+    r = r && list_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // expr+ sstatement_break (sindent (indent_expr+ | sstatement_break)* sdedent)?
-  private static boolean indent_expr_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indent_expr_0")) return false;
+  // (operation_expr whitespace*)+
+  private static boolean list_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "list_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = indent_expr_0_0(b, l + 1);
-    r = r && sstatement_break(b, l + 1);
-    r = r && indent_expr_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // expr+
-  private static boolean indent_expr_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indent_expr_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = expr(b, l + 1);
+    r = list_0_0(b, l + 1);
     while (r) {
       int c = current_position_(b);
-      if (!expr(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "indent_expr_0_0", c)) break;
+      if (!list_0_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "list_0", c)) break;
     }
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (sindent (indent_expr+ | sstatement_break)* sdedent)?
-  private static boolean indent_expr_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indent_expr_0_2")) return false;
-    indent_expr_0_2_0(b, l + 1);
-    return true;
-  }
-
-  // sindent (indent_expr+ | sstatement_break)* sdedent
-  private static boolean indent_expr_0_2_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indent_expr_0_2_0")) return false;
+  // operation_expr whitespace*
+  private static boolean list_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "list_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = sindent(b, l + 1);
-    r = r && indent_expr_0_2_0_1(b, l + 1);
-    r = r && sdedent(b, l + 1);
+    r = operation_expr(b, l + 1);
+    r = r && list_0_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (indent_expr+ | sstatement_break)*
-  private static boolean indent_expr_0_2_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indent_expr_0_2_0_1")) return false;
+  // whitespace*
+  private static boolean list_0_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "list_0_0_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!indent_expr_0_2_0_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "indent_expr_0_2_0_1", c)) break;
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "list_0_0_1", c)) break;
     }
     return true;
   }
 
-  // indent_expr+ | sstatement_break
-  private static boolean indent_expr_0_2_0_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indent_expr_0_2_0_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = indent_expr_0_2_0_1_0_0(b, l + 1);
-    if (!r) r = sstatement_break(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // indent_expr+
-  private static boolean indent_expr_0_2_0_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "indent_expr_0_2_0_1_0_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = indent_expr(b, l + 1);
-    while (r) {
+  // whitespace*
+  private static boolean list_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "list_1")) return false;
+    while (true) {
       int c = current_position_(b);
-      if (!indent_expr(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "indent_expr_0_2_0_1_0_0", c)) break;
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "list_1", c)) break;
     }
-    exit_section_(b, m, null, r);
-    return r;
+    return true;
   }
 
   /* ********************************************************** */
@@ -603,83 +580,120 @@ public class MParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (whitespace* expr)+ whitespace*
-  public static boolean paren_args(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "paren_args")) return false;
+  // apply_expr (whitespace* OPERATOR whitespace* operation_expr)?
+  public static boolean operation_expr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "operation_expr")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PAREN_ARGS, "<paren args>");
-    r = paren_args_0(b, l + 1);
-    r = r && paren_args_1(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, OPERATION_EXPR, "<operation expr>");
+    r = apply_expr(b, l + 1);
+    r = r && operation_expr_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // (whitespace* expr)+
-  private static boolean paren_args_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "paren_args_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = paren_args_0_0(b, l + 1);
-    while (r) {
-      int c = current_position_(b);
-      if (!paren_args_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "paren_args_0", c)) break;
-    }
-    exit_section_(b, m, null, r);
-    return r;
+  // (whitespace* OPERATOR whitespace* operation_expr)?
+  private static boolean operation_expr_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "operation_expr_1")) return false;
+    operation_expr_1_0(b, l + 1);
+    return true;
   }
 
-  // whitespace* expr
-  private static boolean paren_args_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "paren_args_0_0")) return false;
+  // whitespace* OPERATOR whitespace* operation_expr
+  private static boolean operation_expr_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "operation_expr_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = paren_args_0_0_0(b, l + 1);
-    r = r && expr(b, l + 1);
+    r = operation_expr_1_0_0(b, l + 1);
+    r = r && consumeToken(b, OPERATOR);
+    r = r && operation_expr_1_0_2(b, l + 1);
+    r = r && operation_expr(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   // whitespace*
-  private static boolean paren_args_0_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "paren_args_0_0_0")) return false;
+  private static boolean operation_expr_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "operation_expr_1_0_0")) return false;
     while (true) {
       int c = current_position_(b);
       if (!whitespace(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "paren_args_0_0_0", c)) break;
+      if (!empty_element_parsed_guard_(b, "operation_expr_1_0_0", c)) break;
     }
     return true;
   }
 
   // whitespace*
-  private static boolean paren_args_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "paren_args_1")) return false;
+  private static boolean operation_expr_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "operation_expr_1_0_2")) return false;
     while (true) {
       int c = current_position_(b);
       if (!whitespace(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "paren_args_1", c)) break;
+      if (!empty_element_parsed_guard_(b, "operation_expr_1_0_2", c)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
-  // OPEN_PAREN paren_args? CLOSE_PAREN
+  // OPEN_PAREN whitespace* (args | OPERATOR)? whitespace* CLOSE_PAREN | atom
   public static boolean paren_expr(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "paren_expr")) return false;
-    if (!nextTokenIs(b, OPEN_PAREN)) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, OPEN_PAREN);
-    r = r && paren_expr_1(b, l + 1);
-    r = r && consumeToken(b, CLOSE_PAREN);
-    exit_section_(b, m, PAREN_EXPR, r);
+    Marker m = enter_section_(b, l, _NONE_, PAREN_EXPR, "<paren expr>");
+    r = paren_expr_0(b, l + 1);
+    if (!r) r = atom(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // paren_args?
-  private static boolean paren_expr_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "paren_expr_1")) return false;
-    paren_args(b, l + 1);
+  // OPEN_PAREN whitespace* (args | OPERATOR)? whitespace* CLOSE_PAREN
+  private static boolean paren_expr_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "paren_expr_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, OPEN_PAREN);
+    r = r && paren_expr_0_1(b, l + 1);
+    r = r && paren_expr_0_2(b, l + 1);
+    r = r && paren_expr_0_3(b, l + 1);
+    r = r && consumeToken(b, CLOSE_PAREN);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // whitespace*
+  private static boolean paren_expr_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "paren_expr_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "paren_expr_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // (args | OPERATOR)?
+  private static boolean paren_expr_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "paren_expr_0_2")) return false;
+    paren_expr_0_2_0(b, l + 1);
+    return true;
+  }
+
+  // args | OPERATOR
+  private static boolean paren_expr_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "paren_expr_0_2_0")) return false;
+    boolean r;
+    r = args(b, l + 1);
+    if (!r) r = consumeToken(b, OPERATOR);
+    return r;
+  }
+
+  // whitespace*
+  private static boolean paren_expr_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "paren_expr_0_3")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!whitespace(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "paren_expr_0_3", c)) break;
+    }
     return true;
   }
 

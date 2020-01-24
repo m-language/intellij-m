@@ -28,8 +28,20 @@ public class MBracketExprImpl extends ASTWrapperPsiElement implements MBracketEx
 
   @Override
   @Nullable
-  public MBracketArgs getBracketArgs() {
-    return findChildByClass(MBracketArgs.class);
+  public MAtom getAtom() {
+    return findChildByClass(MAtom.class);
+  }
+
+  @Override
+  @Nullable
+  public MList getList() {
+    return findChildByClass(MList.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MWhitespace> getWhitespaceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MWhitespace.class);
   }
 
 }

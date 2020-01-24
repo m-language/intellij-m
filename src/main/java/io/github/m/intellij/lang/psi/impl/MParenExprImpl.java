@@ -28,8 +28,20 @@ public class MParenExprImpl extends ASTWrapperPsiElement implements MParenExpr {
 
   @Override
   @Nullable
-  public MParenArgs getParenArgs() {
-    return findChildByClass(MParenArgs.class);
+  public MArgs getArgs() {
+    return findChildByClass(MArgs.class);
+  }
+
+  @Override
+  @Nullable
+  public MAtom getAtom() {
+    return findChildByClass(MAtom.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MWhitespace> getWhitespaceList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MWhitespace.class);
   }
 
 }
